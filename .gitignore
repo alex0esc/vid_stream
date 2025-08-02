@@ -1,0 +1,9 @@
+build-debug/*
+build-release/*
+.cache/*
+config/*
+.ignore
+run_build.bat
+run_build_release.bat
+run_build.sh
+run_build_release.sh
