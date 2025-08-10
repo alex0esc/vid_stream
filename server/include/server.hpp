@@ -1,0 +1,29 @@
+#pragma once
+#include "session.hpp"
+
+namespace vsa {
+
+  class Server {
+    asio::io_context m_asio_context;
+    tcp::acceptor m_acceptor;
+    
+    void handleConnections();    
+    
+  public:
+    std::list<std::shared_ptr<Session>> m_sessiones;
+    
+    Server() = delete;
+    Server(uint16_t port)
+    : m_acceptor(tcp::acceptor(m_asio_context, tcp::endpoint(tcp::v4(), port))) {}
+    Server(const Server&) = delete;
+    Server& operator=(const Server&) = delete;  
+    
+    
+    void broadcast(std::shared_ptr<Packet> message);
+    
+    void init();  
+    void run();
+    void shutdown();
+  };
+  
+}

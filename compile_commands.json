@@ -1,0 +1,242 @@
+[
+{
+  "directory": "C:/Users/alexe/Desktop/workspace/vid_stream/build-debug",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DASIO_STANDALONE -DNOMINMAX -DWIN32_LEAN_AND_MEAN -D_OPTION_LOG_ERROR -D_OPTION_LOG_INFO -D_OPTION_LOG_TRACE -D_OPTION_LOG_WARN -D_WIN32_WINNT=0x0A00 -IC:/Users/alexe/Desktop/workspace/vid_stream/logger/include -O0 -g -Xclang -gcodeview -std=gnu++20 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -o logger\\CMakeFiles\\logger.dir\\src\\logger.cpp.obj -c C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\logger\\src\\logger.cpp",
+  "file": "C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\logger\\src\\logger.cpp",
+  "output": "logger\\CMakeFiles\\logger.dir\\src\\logger.cpp.obj"
+},
+{
+  "directory": "C:/Users/alexe/Desktop/workspace/vid_stream/build-debug",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DASIO_STANDALONE -DNOMINMAX -DWIN32_LEAN_AND_MEAN -D_OPTION_LOG_ERROR -D_OPTION_LOG_INFO -D_OPTION_LOG_TRACE -D_OPTION_LOG_WARN -D_WIN32_WINNT=0x0A00 -IC:/Users/alexe/Desktop/workspace/vid_stream/packet_manager/include -IC:/Users/alexe/Desktop/workspace/vid_stream/asio -IC:/Users/alexe/Desktop/workspace/vid_stream/logger/include -O0 -g -Xclang -gcodeview -std=gnu++20 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -o packet_manager\\CMakeFiles\\packet_manager.dir\\src\\packet.cpp.obj -c C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\packet_manager\\src\\packet.cpp",
+  "file": "C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\packet_manager\\src\\packet.cpp",
+  "output": "packet_manager\\CMakeFiles\\packet_manager.dir\\src\\packet.cpp.obj"
+},
+{
+  "directory": "C:/Users/alexe/Desktop/workspace/vid_stream/build-debug",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DASIO_STANDALONE -DNOMINMAX -DWIN32_LEAN_AND_MEAN -D_OPTION_LOG_ERROR -D_OPTION_LOG_INFO -D_OPTION_LOG_TRACE -D_OPTION_LOG_WARN -D_WIN32_WINNT=0x0A00 -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/include -IC:/Users/alexe/Desktop/workspace/vid_stream/logger/include -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/include -isystem C:/VulkanSDK/1.4.304.0/Include -O0 -g -Xclang -gcodeview -std=gnu++20 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -o ui_frame\\CMakeFiles\\ui_frame.dir\\src\\uif_app_base.cpp.obj -c C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\src\\uif_app_base.cpp",
+  "file": "C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\src\\uif_app_base.cpp",
+  "output": "ui_frame\\CMakeFiles\\ui_frame.dir\\src\\uif_app_base.cpp.obj"
+},
+{
+  "directory": "C:/Users/alexe/Desktop/workspace/vid_stream/build-debug",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DASIO_STANDALONE -DNOMINMAX -DWIN32_LEAN_AND_MEAN -D_OPTION_LOG_ERROR -D_OPTION_LOG_INFO -D_OPTION_LOG_TRACE -D_OPTION_LOG_WARN -D_WIN32_WINNT=0x0A00 -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/include -IC:/Users/alexe/Desktop/workspace/vid_stream/logger/include -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/include -isystem C:/VulkanSDK/1.4.304.0/Include -O0 -g -Xclang -gcodeview -std=gnu++20 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -o ui_frame\\CMakeFiles\\ui_frame.dir\\src\\uif_context.cpp.obj -c C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\src\\uif_context.cpp",
+  "file": "C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\src\\uif_context.cpp",
+  "output": "ui_frame\\CMakeFiles\\ui_frame.dir\\src\\uif_context.cpp.obj"
+},
+{
+  "directory": "C:/Users/alexe/Desktop/workspace/vid_stream/build-debug",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DASIO_STANDALONE -DNOMINMAX -DWIN32_LEAN_AND_MEAN -D_OPTION_LOG_ERROR -D_OPTION_LOG_INFO -D_OPTION_LOG_TRACE -D_OPTION_LOG_WARN -D_WIN32_WINNT=0x0A00 -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/include -IC:/Users/alexe/Desktop/workspace/vid_stream/logger/include -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/include -isystem C:/VulkanSDK/1.4.304.0/Include -O0 -g -Xclang -gcodeview -std=gnu++20 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -o ui_frame\\CMakeFiles\\ui_frame.dir\\src\\uif_memory.cpp.obj -c C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\src\\uif_memory.cpp",
+  "file": "C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\src\\uif_memory.cpp",
+  "output": "ui_frame\\CMakeFiles\\ui_frame.dir\\src\\uif_memory.cpp.obj"
+},
+{
+  "directory": "C:/Users/alexe/Desktop/workspace/vid_stream/build-debug",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DASIO_STANDALONE -DNOMINMAX -DWIN32_LEAN_AND_MEAN -D_OPTION_LOG_ERROR -D_OPTION_LOG_INFO -D_OPTION_LOG_TRACE -D_OPTION_LOG_WARN -D_WIN32_WINNT=0x0A00 -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/include -IC:/Users/alexe/Desktop/workspace/vid_stream/logger/include -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/include -isystem C:/VulkanSDK/1.4.304.0/Include -O0 -g -Xclang -gcodeview -std=gnu++20 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -o ui_frame\\CMakeFiles\\ui_frame.dir\\src\\uif_texture.cpp.obj -c C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\src\\uif_texture.cpp",
+  "file": "C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\src\\uif_texture.cpp",
+  "output": "ui_frame\\CMakeFiles\\ui_frame.dir\\src\\uif_texture.cpp.obj"
+},
+{
+  "directory": "C:/Users/alexe/Desktop/workspace/vid_stream/build-debug",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DASIO_STANDALONE -DNOMINMAX -DWIN32_LEAN_AND_MEAN -D_OPTION_LOG_ERROR -D_OPTION_LOG_INFO -D_OPTION_LOG_TRACE -D_OPTION_LOG_WARN -D_WIN32_WINNT=0x0A00 -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/include -IC:/Users/alexe/Desktop/workspace/vid_stream/logger/include -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/include -isystem C:/VulkanSDK/1.4.304.0/Include -O0 -g -Xclang -gcodeview -std=gnu++20 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -o ui_frame\\CMakeFiles\\ui_frame.dir\\src\\uif_window.cpp.obj -c C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\src\\uif_window.cpp",
+  "file": "C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\src\\uif_window.cpp",
+  "output": "ui_frame\\CMakeFiles\\ui_frame.dir\\src\\uif_window.cpp.obj"
+},
+{
+  "directory": "C:/Users/alexe/Desktop/workspace/vid_stream/build-debug",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DASIO_STANDALONE -DNOMINMAX -DWIN32_LEAN_AND_MEAN -D_OPTION_LOG_ERROR -D_OPTION_LOG_INFO -D_OPTION_LOG_TRACE -D_OPTION_LOG_WARN -D_WIN32_WINNT=0x0A00 -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/include -IC:/Users/alexe/Desktop/workspace/vid_stream/logger/include -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/include -isystem C:/VulkanSDK/1.4.304.0/Include -O0 -g -Xclang -gcodeview -std=gnu++20 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -o ui_frame\\CMakeFiles\\ui_frame.dir\\imgui\\imgui.cpp.obj -c C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\imgui.cpp",
+  "file": "C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\imgui.cpp",
+  "output": "ui_frame\\CMakeFiles\\ui_frame.dir\\imgui\\imgui.cpp.obj"
+},
+{
+  "directory": "C:/Users/alexe/Desktop/workspace/vid_stream/build-debug",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DASIO_STANDALONE -DNOMINMAX -DWIN32_LEAN_AND_MEAN -D_OPTION_LOG_ERROR -D_OPTION_LOG_INFO -D_OPTION_LOG_TRACE -D_OPTION_LOG_WARN -D_WIN32_WINNT=0x0A00 -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/include -IC:/Users/alexe/Desktop/workspace/vid_stream/logger/include -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/include -isystem C:/VulkanSDK/1.4.304.0/Include -O0 -g -Xclang -gcodeview -std=gnu++20 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -o ui_frame\\CMakeFiles\\ui_frame.dir\\imgui\\imgui_demo.cpp.obj -c C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\imgui_demo.cpp",
+  "file": "C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\imgui_demo.cpp",
+  "output": "ui_frame\\CMakeFiles\\ui_frame.dir\\imgui\\imgui_demo.cpp.obj"
+},
+{
+  "directory": "C:/Users/alexe/Desktop/workspace/vid_stream/build-debug",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DASIO_STANDALONE -DNOMINMAX -DWIN32_LEAN_AND_MEAN -D_OPTION_LOG_ERROR -D_OPTION_LOG_INFO -D_OPTION_LOG_TRACE -D_OPTION_LOG_WARN -D_WIN32_WINNT=0x0A00 -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/include -IC:/Users/alexe/Desktop/workspace/vid_stream/logger/include -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/include -isystem C:/VulkanSDK/1.4.304.0/Include -O0 -g -Xclang -gcodeview -std=gnu++20 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -o ui_frame\\CMakeFiles\\ui_frame.dir\\imgui\\imgui_draw.cpp.obj -c C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\imgui_draw.cpp",
+  "file": "C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\imgui_draw.cpp",
+  "output": "ui_frame\\CMakeFiles\\ui_frame.dir\\imgui\\imgui_draw.cpp.obj"
+},
+{
+  "directory": "C:/Users/alexe/Desktop/workspace/vid_stream/build-debug",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DASIO_STANDALONE -DNOMINMAX -DWIN32_LEAN_AND_MEAN -D_OPTION_LOG_ERROR -D_OPTION_LOG_INFO -D_OPTION_LOG_TRACE -D_OPTION_LOG_WARN -D_WIN32_WINNT=0x0A00 -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/include -IC:/Users/alexe/Desktop/workspace/vid_stream/logger/include -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/include -isystem C:/VulkanSDK/1.4.304.0/Include -O0 -g -Xclang -gcodeview -std=gnu++20 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -o ui_frame\\CMakeFiles\\ui_frame.dir\\imgui\\imgui_impl_glfw.cpp.obj -c C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\imgui_impl_glfw.cpp",
+  "file": "C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\imgui_impl_glfw.cpp",
+  "output": "ui_frame\\CMakeFiles\\ui_frame.dir\\imgui\\imgui_impl_glfw.cpp.obj"
+},
+{
+  "directory": "C:/Users/alexe/Desktop/workspace/vid_stream/build-debug",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DASIO_STANDALONE -DNOMINMAX -DWIN32_LEAN_AND_MEAN -D_OPTION_LOG_ERROR -D_OPTION_LOG_INFO -D_OPTION_LOG_TRACE -D_OPTION_LOG_WARN -D_WIN32_WINNT=0x0A00 -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/include -IC:/Users/alexe/Desktop/workspace/vid_stream/logger/include -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/include -isystem C:/VulkanSDK/1.4.304.0/Include -O0 -g -Xclang -gcodeview -std=gnu++20 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -o ui_frame\\CMakeFiles\\ui_frame.dir\\imgui\\imgui_impl_vulkan.cpp.obj -c C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\imgui_impl_vulkan.cpp",
+  "file": "C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\imgui_impl_vulkan.cpp",
+  "output": "ui_frame\\CMakeFiles\\ui_frame.dir\\imgui\\imgui_impl_vulkan.cpp.obj"
+},
+{
+  "directory": "C:/Users/alexe/Desktop/workspace/vid_stream/build-debug",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DASIO_STANDALONE -DNOMINMAX -DWIN32_LEAN_AND_MEAN -D_OPTION_LOG_ERROR -D_OPTION_LOG_INFO -D_OPTION_LOG_TRACE -D_OPTION_LOG_WARN -D_WIN32_WINNT=0x0A00 -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/include -IC:/Users/alexe/Desktop/workspace/vid_stream/logger/include -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/include -isystem C:/VulkanSDK/1.4.304.0/Include -O0 -g -Xclang -gcodeview -std=gnu++20 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -o ui_frame\\CMakeFiles\\ui_frame.dir\\imgui\\imgui_tables.cpp.obj -c C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\imgui_tables.cpp",
+  "file": "C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\imgui_tables.cpp",
+  "output": "ui_frame\\CMakeFiles\\ui_frame.dir\\imgui\\imgui_tables.cpp.obj"
+},
+{
+  "directory": "C:/Users/alexe/Desktop/workspace/vid_stream/build-debug",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DASIO_STANDALONE -DNOMINMAX -DWIN32_LEAN_AND_MEAN -D_OPTION_LOG_ERROR -D_OPTION_LOG_INFO -D_OPTION_LOG_TRACE -D_OPTION_LOG_WARN -D_WIN32_WINNT=0x0A00 -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/include -IC:/Users/alexe/Desktop/workspace/vid_stream/logger/include -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/include -isystem C:/VulkanSDK/1.4.304.0/Include -O0 -g -Xclang -gcodeview -std=gnu++20 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -o ui_frame\\CMakeFiles\\ui_frame.dir\\imgui\\imgui_widgets.cpp.obj -c C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\imgui_widgets.cpp",
+  "file": "C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\imgui_widgets.cpp",
+  "output": "ui_frame\\CMakeFiles\\ui_frame.dir\\imgui\\imgui_widgets.cpp.obj"
+},
+{
+  "directory": "C:/Users/alexe/Desktop/workspace/vid_stream/build-debug",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DASIO_STANDALONE -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -D_WIN32_WINNT=0x0A00 -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/include -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/src -IC:/Users/alexe/Desktop/workspace/vid_stream/build-debug/ui_frame/binary_dir/src -O0 -g -Xclang -gcodeview -std=c99 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -Wall -o ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\context.c.obj -c C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\context.c",
+  "file": "C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\context.c",
+  "output": "ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\context.c.obj"
+},
+{
+  "directory": "C:/Users/alexe/Desktop/workspace/vid_stream/build-debug",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DASIO_STANDALONE -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -D_WIN32_WINNT=0x0A00 -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/include -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/src -IC:/Users/alexe/Desktop/workspace/vid_stream/build-debug/ui_frame/binary_dir/src -O0 -g -Xclang -gcodeview -std=c99 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -Wall -o ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\init.c.obj -c C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\init.c",
+  "file": "C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\init.c",
+  "output": "ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\init.c.obj"
+},
+{
+  "directory": "C:/Users/alexe/Desktop/workspace/vid_stream/build-debug",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DASIO_STANDALONE -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -D_WIN32_WINNT=0x0A00 -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/include -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/src -IC:/Users/alexe/Desktop/workspace/vid_stream/build-debug/ui_frame/binary_dir/src -O0 -g -Xclang -gcodeview -std=c99 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -Wall -o ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\input.c.obj -c C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\input.c",
+  "file": "C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\input.c",
+  "output": "ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\input.c.obj"
+},
+{
+  "directory": "C:/Users/alexe/Desktop/workspace/vid_stream/build-debug",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DASIO_STANDALONE -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -D_WIN32_WINNT=0x0A00 -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/include -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/src -IC:/Users/alexe/Desktop/workspace/vid_stream/build-debug/ui_frame/binary_dir/src -O0 -g -Xclang -gcodeview -std=c99 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -Wall -o ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\monitor.c.obj -c C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\monitor.c",
+  "file": "C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\monitor.c",
+  "output": "ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\monitor.c.obj"
+},
+{
+  "directory": "C:/Users/alexe/Desktop/workspace/vid_stream/build-debug",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DASIO_STANDALONE -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -D_WIN32_WINNT=0x0A00 -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/include -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/src -IC:/Users/alexe/Desktop/workspace/vid_stream/build-debug/ui_frame/binary_dir/src -O0 -g -Xclang -gcodeview -std=c99 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -Wall -o ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\platform.c.obj -c C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\platform.c",
+  "file": "C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\platform.c",
+  "output": "ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\platform.c.obj"
+},
+{
+  "directory": "C:/Users/alexe/Desktop/workspace/vid_stream/build-debug",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DASIO_STANDALONE -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -D_WIN32_WINNT=0x0A00 -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/include -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/src -IC:/Users/alexe/Desktop/workspace/vid_stream/build-debug/ui_frame/binary_dir/src -O0 -g -Xclang -gcodeview -std=c99 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -Wall -o ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\vulkan.c.obj -c C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\vulkan.c",
+  "file": "C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\vulkan.c",
+  "output": "ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\vulkan.c.obj"
+},
+{
+  "directory": "C:/Users/alexe/Desktop/workspace/vid_stream/build-debug",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DASIO_STANDALONE -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -D_WIN32_WINNT=0x0A00 -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/include -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/src -IC:/Users/alexe/Desktop/workspace/vid_stream/build-debug/ui_frame/binary_dir/src -O0 -g -Xclang -gcodeview -std=c99 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -Wall -o ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\window.c.obj -c C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\window.c",
+  "file": "C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\window.c",
+  "output": "ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\window.c.obj"
+},
+{
+  "directory": "C:/Users/alexe/Desktop/workspace/vid_stream/build-debug",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DASIO_STANDALONE -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -D_WIN32_WINNT=0x0A00 -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/include -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/src -IC:/Users/alexe/Desktop/workspace/vid_stream/build-debug/ui_frame/binary_dir/src -O0 -g -Xclang -gcodeview -std=c99 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -Wall -o ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\egl_context.c.obj -c C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\egl_context.c",
+  "file": "C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\egl_context.c",
+  "output": "ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\egl_context.c.obj"
+},
+{
+  "directory": "C:/Users/alexe/Desktop/workspace/vid_stream/build-debug",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DASIO_STANDALONE -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -D_WIN32_WINNT=0x0A00 -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/include -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/src -IC:/Users/alexe/Desktop/workspace/vid_stream/build-debug/ui_frame/binary_dir/src -O0 -g -Xclang -gcodeview -std=c99 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -Wall -o ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\osmesa_context.c.obj -c C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\osmesa_context.c",
+  "file": "C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\osmesa_context.c",
+  "output": "ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\osmesa_context.c.obj"
+},
+{
+  "directory": "C:/Users/alexe/Desktop/workspace/vid_stream/build-debug",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DASIO_STANDALONE -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -D_WIN32_WINNT=0x0A00 -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/include -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/src -IC:/Users/alexe/Desktop/workspace/vid_stream/build-debug/ui_frame/binary_dir/src -O0 -g -Xclang -gcodeview -std=c99 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -Wall -o ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\null_init.c.obj -c C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\null_init.c",
+  "file": "C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\null_init.c",
+  "output": "ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\null_init.c.obj"
+},
+{
+  "directory": "C:/Users/alexe/Desktop/workspace/vid_stream/build-debug",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DASIO_STANDALONE -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -D_WIN32_WINNT=0x0A00 -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/include -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/src -IC:/Users/alexe/Desktop/workspace/vid_stream/build-debug/ui_frame/binary_dir/src -O0 -g -Xclang -gcodeview -std=c99 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -Wall -o ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\null_monitor.c.obj -c C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\null_monitor.c",
+  "file": "C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\null_monitor.c",
+  "output": "ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\null_monitor.c.obj"
+},
+{
+  "directory": "C:/Users/alexe/Desktop/workspace/vid_stream/build-debug",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DASIO_STANDALONE -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -D_WIN32_WINNT=0x0A00 -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/include -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/src -IC:/Users/alexe/Desktop/workspace/vid_stream/build-debug/ui_frame/binary_dir/src -O0 -g -Xclang -gcodeview -std=c99 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -Wall -o ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\null_window.c.obj -c C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\null_window.c",
+  "file": "C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\null_window.c",
+  "output": "ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\null_window.c.obj"
+},
+{
+  "directory": "C:/Users/alexe/Desktop/workspace/vid_stream/build-debug",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DASIO_STANDALONE -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -D_WIN32_WINNT=0x0A00 -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/include -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/src -IC:/Users/alexe/Desktop/workspace/vid_stream/build-debug/ui_frame/binary_dir/src -O0 -g -Xclang -gcodeview -std=c99 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -Wall -o ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\null_joystick.c.obj -c C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\null_joystick.c",
+  "file": "C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\null_joystick.c",
+  "output": "ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\null_joystick.c.obj"
+},
+{
+  "directory": "C:/Users/alexe/Desktop/workspace/vid_stream/build-debug",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DASIO_STANDALONE -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -D_WIN32_WINNT=0x0A00 -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/include -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/src -IC:/Users/alexe/Desktop/workspace/vid_stream/build-debug/ui_frame/binary_dir/src -O0 -g -Xclang -gcodeview -std=c99 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -Wall -o ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\win32_module.c.obj -c C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\win32_module.c",
+  "file": "C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\win32_module.c",
+  "output": "ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\win32_module.c.obj"
+},
+{
+  "directory": "C:/Users/alexe/Desktop/workspace/vid_stream/build-debug",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DASIO_STANDALONE -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -D_WIN32_WINNT=0x0A00 -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/include -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/src -IC:/Users/alexe/Desktop/workspace/vid_stream/build-debug/ui_frame/binary_dir/src -O0 -g -Xclang -gcodeview -std=c99 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -Wall -o ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\win32_time.c.obj -c C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\win32_time.c",
+  "file": "C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\win32_time.c",
+  "output": "ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\win32_time.c.obj"
+},
+{
+  "directory": "C:/Users/alexe/Desktop/workspace/vid_stream/build-debug",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DASIO_STANDALONE -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -D_WIN32_WINNT=0x0A00 -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/include -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/src -IC:/Users/alexe/Desktop/workspace/vid_stream/build-debug/ui_frame/binary_dir/src -O0 -g -Xclang -gcodeview -std=c99 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -Wall -o ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\win32_thread.c.obj -c C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\win32_thread.c",
+  "file": "C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\win32_thread.c",
+  "output": "ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\win32_thread.c.obj"
+},
+{
+  "directory": "C:/Users/alexe/Desktop/workspace/vid_stream/build-debug",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DASIO_STANDALONE -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -D_WIN32_WINNT=0x0A00 -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/include -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/src -IC:/Users/alexe/Desktop/workspace/vid_stream/build-debug/ui_frame/binary_dir/src -O0 -g -Xclang -gcodeview -std=c99 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -Wall -o ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\win32_init.c.obj -c C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\win32_init.c",
+  "file": "C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\win32_init.c",
+  "output": "ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\win32_init.c.obj"
+},
+{
+  "directory": "C:/Users/alexe/Desktop/workspace/vid_stream/build-debug",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DASIO_STANDALONE -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -D_WIN32_WINNT=0x0A00 -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/include -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/src -IC:/Users/alexe/Desktop/workspace/vid_stream/build-debug/ui_frame/binary_dir/src -O0 -g -Xclang -gcodeview -std=c99 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -Wall -o ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\win32_joystick.c.obj -c C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\win32_joystick.c",
+  "file": "C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\win32_joystick.c",
+  "output": "ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\win32_joystick.c.obj"
+},
+{
+  "directory": "C:/Users/alexe/Desktop/workspace/vid_stream/build-debug",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DASIO_STANDALONE -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -D_WIN32_WINNT=0x0A00 -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/include -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/src -IC:/Users/alexe/Desktop/workspace/vid_stream/build-debug/ui_frame/binary_dir/src -O0 -g -Xclang -gcodeview -std=c99 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -Wall -o ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\win32_monitor.c.obj -c C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\win32_monitor.c",
+  "file": "C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\win32_monitor.c",
+  "output": "ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\win32_monitor.c.obj"
+},
+{
+  "directory": "C:/Users/alexe/Desktop/workspace/vid_stream/build-debug",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DASIO_STANDALONE -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -D_WIN32_WINNT=0x0A00 -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/include -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/src -IC:/Users/alexe/Desktop/workspace/vid_stream/build-debug/ui_frame/binary_dir/src -O0 -g -Xclang -gcodeview -std=c99 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -Wall -o ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\win32_window.c.obj -c C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\win32_window.c",
+  "file": "C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\win32_window.c",
+  "output": "ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\win32_window.c.obj"
+},
+{
+  "directory": "C:/Users/alexe/Desktop/workspace/vid_stream/build-debug",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\clang.exe -DASIO_STANDALONE -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -D_WIN32_WINNT=0x0A00 -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/include -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/src -IC:/Users/alexe/Desktop/workspace/vid_stream/build-debug/ui_frame/binary_dir/src -O0 -g -Xclang -gcodeview -std=c99 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -Wall -o ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\wgl_context.c.obj -c C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\wgl_context.c",
+  "file": "C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\ui_frame\\imgui\\glfw-3.4\\src\\wgl_context.c",
+  "output": "ui_frame\\binary_dir\\src\\CMakeFiles\\glfw.dir\\wgl_context.c.obj"
+},
+{
+  "directory": "C:/Users/alexe/Desktop/workspace/vid_stream/build-debug",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DASIO_STANDALONE -DNOMINMAX -DWIN32_LEAN_AND_MEAN -D_OPTION_LOG_ERROR -D_OPTION_LOG_INFO -D_OPTION_LOG_TRACE -D_OPTION_LOG_WARN -D_WIN32_WINNT=0x0A00 -IC:/Users/alexe/Desktop/workspace/vid_stream/client/include -IC:/Users/alexe/Desktop/workspace/vid_stream/logger/include -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/include -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/include -IC:/Users/alexe/Desktop/workspace/vid_stream/packet_manager/include -IC:/Users/alexe/Desktop/workspace/vid_stream/asio -isystem C:/VulkanSDK/1.4.304.0/Include -O0 -g -Xclang -gcodeview -std=gnu++20 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -o client\\CMakeFiles\\vid_stream_client.dir\\src\\client.cpp.obj -c C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\client\\src\\client.cpp",
+  "file": "C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\client\\src\\client.cpp",
+  "output": "client\\CMakeFiles\\vid_stream_client.dir\\src\\client.cpp.obj"
+},
+{
+  "directory": "C:/Users/alexe/Desktop/workspace/vid_stream/build-debug",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DASIO_STANDALONE -DNOMINMAX -DWIN32_LEAN_AND_MEAN -D_OPTION_LOG_ERROR -D_OPTION_LOG_INFO -D_OPTION_LOG_TRACE -D_OPTION_LOG_WARN -D_WIN32_WINNT=0x0A00 -IC:/Users/alexe/Desktop/workspace/vid_stream/client/include -IC:/Users/alexe/Desktop/workspace/vid_stream/logger/include -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/include -IC:/Users/alexe/Desktop/workspace/vid_stream/ui_frame/imgui/glfw-3.4/include -IC:/Users/alexe/Desktop/workspace/vid_stream/packet_manager/include -IC:/Users/alexe/Desktop/workspace/vid_stream/asio -isystem C:/VulkanSDK/1.4.304.0/Include -O0 -g -Xclang -gcodeview -std=gnu++20 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -o client\\CMakeFiles\\vid_stream_client.dir\\src\\main.cpp.obj -c C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\client\\src\\main.cpp",
+  "file": "C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\client\\src\\main.cpp",
+  "output": "client\\CMakeFiles\\vid_stream_client.dir\\src\\main.cpp.obj"
+},
+{
+  "directory": "C:/Users/alexe/Desktop/workspace/vid_stream/build-debug",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DASIO_STANDALONE -DNOMINMAX -DWIN32_LEAN_AND_MEAN -D_OPTION_LOG_ERROR -D_OPTION_LOG_INFO -D_OPTION_LOG_TRACE -D_OPTION_LOG_WARN -D_WIN32_WINNT=0x0A00 -IC:/Users/alexe/Desktop/workspace/vid_stream/server/include -IC:/Users/alexe/Desktop/workspace/vid_stream/packet_manager/include -IC:/Users/alexe/Desktop/workspace/vid_stream/asio -IC:/Users/alexe/Desktop/workspace/vid_stream/logger/include -O0 -g -Xclang -gcodeview -std=gnu++20 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -o server\\CMakeFiles\\vid_stream_server.dir\\src\\main.cpp.obj -c C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\server\\src\\main.cpp",
+  "file": "C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\server\\src\\main.cpp",
+  "output": "server\\CMakeFiles\\vid_stream_server.dir\\src\\main.cpp.obj"
+},
+{
+  "directory": "C:/Users/alexe/Desktop/workspace/vid_stream/build-debug",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DASIO_STANDALONE -DNOMINMAX -DWIN32_LEAN_AND_MEAN -D_OPTION_LOG_ERROR -D_OPTION_LOG_INFO -D_OPTION_LOG_TRACE -D_OPTION_LOG_WARN -D_WIN32_WINNT=0x0A00 -IC:/Users/alexe/Desktop/workspace/vid_stream/server/include -IC:/Users/alexe/Desktop/workspace/vid_stream/packet_manager/include -IC:/Users/alexe/Desktop/workspace/vid_stream/asio -IC:/Users/alexe/Desktop/workspace/vid_stream/logger/include -O0 -g -Xclang -gcodeview -std=gnu++20 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -o server\\CMakeFiles\\vid_stream_server.dir\\src\\server.cpp.obj -c C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\server\\src\\server.cpp",
+  "file": "C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\server\\src\\server.cpp",
+  "output": "server\\CMakeFiles\\vid_stream_server.dir\\src\\server.cpp.obj"
+},
+{
+  "directory": "C:/Users/alexe/Desktop/workspace/vid_stream/build-debug",
+  "command": "C:\\PROGRA~1\\LLVM\\bin\\CLANG_~1.EXE -DASIO_STANDALONE -DNOMINMAX -DWIN32_LEAN_AND_MEAN -D_OPTION_LOG_ERROR -D_OPTION_LOG_INFO -D_OPTION_LOG_TRACE -D_OPTION_LOG_WARN -D_WIN32_WINNT=0x0A00 -IC:/Users/alexe/Desktop/workspace/vid_stream/server/include -IC:/Users/alexe/Desktop/workspace/vid_stream/packet_manager/include -IC:/Users/alexe/Desktop/workspace/vid_stream/asio -IC:/Users/alexe/Desktop/workspace/vid_stream/logger/include -O0 -g -Xclang -gcodeview -std=gnu++20 -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -o server\\CMakeFiles\\vid_stream_server.dir\\src\\session.cpp.obj -c C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\server\\src\\session.cpp",
+  "file": "C:\\Users\\alexe\\Desktop\\workspace\\vid_stream\\server\\src\\session.cpp",
+  "output": "server\\CMakeFiles\\vid_stream_server.dir\\src\\session.cpp.obj"
+}
+]

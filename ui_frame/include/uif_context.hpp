@@ -8,12 +8,11 @@
 #endif
 
 
-
 namespace uif {
    
   class VulkanContext {
     static constexpr int c_min_image_count = 2;
-    static constexpr vk::ClearValue c_background_color = { vk::ClearColorValue(1.0f, 1.0f, 1.0f, 1.0f) };
+    static constexpr vk::ClearValue c_background_color = { vk::ClearColorValue(0.15f, 0.15f, 0.15f, 1.0f) };
     
     void createVkInstance();  
     void createWindow();

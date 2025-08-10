@@ -2,28 +2,26 @@
 #include <iostream>
 #include <mutex>
 
-#define _INTERNAL_LOG(msg) (slog::g_logger.begin_msg() << msg << std::endl).end_msg()
-
 #ifdef _OPTION_LOG_ERROR
-  #define LOG_ERROR(msg) _INTERNAL_LOG("[\033[31mError\033[0m]\t" << msg)
+  #define LOG_ERROR(msg) (slog::g_logger.begin_msg(slog::LogType::Error) << msg << std::endl).end_msg()
 #else
   #define LOG_ERROR(msg)
 #endif
 
 #ifdef _OPTION_LOG_WARN
-  #define LOG_WARN(msg) _INTERNAL_LOG("[\033[33mWarn\033[0m]\t" << msg)
+  #define LOG_WARN(msg) (slog::g_logger.begin_msg(slog::LogType::Warn) << msg << std::endl).end_msg()
 #else
   #define LOG_WARN(msg)
 #endif
 
 #ifdef _OPTION_LOG_INFO
-  #define LOG_INFO(msg) _INTERNAL_LOG("[\033[36mInfo\033[0m]\t" << msg)
+  #define LOG_INFO(msg) (slog::g_logger.begin_msg(slog::LogType::Info) << msg << std::endl).end_msg()
 #else
   #define LOG_INFO(msg)
 #endif
 
 #ifdef _OPTION_LOG_TRACE
-#define LOG_TRACE(msg) _INTERNAL_LOG("[\033[35mTrace\033[0m]\t" << msg)
+#define LOG_TRACE(msg) (slog::g_logger.begin_msg(slog::LogType::Trace) << msg << std::endl).end_msg()
 #else
   #define LOG_TRACE(msg)
 #endif
@@ -31,15 +29,27 @@
 
 namespace slog {
 
+  enum class LogType {
+    Error,
+    Warn,
+    Info,
+    Trace
+  };
+
   class Logger {
     std::mutex m_mtx;
     std::ostream* m_out;
+    bool m_use_color = true;
      
   public:  
     Logger(std::ostream& stream = std::cout) 
       : m_mtx(), m_out(&stream) {}
+    Logger(const Logger&) = delete;
+    Logger& operator=(const Logger&) = delete;
 
-    Logger& begin_msg();
+    void setOutStream(std::ostream* out);
+    void useColor(bool use_color);
+    Logger& begin_msg(LogType type);
     void end_msg();
     
     template<typename T>
@@ -55,4 +65,25 @@ namespace slog {
   };
 
   extern Logger g_logger;  
+  
+  
+  //custom buffer to read into a string
+  class StringBuffer : public std::streambuf {
+    std::string& m_output;
+
+  public:
+    explicit StringBuffer(std::string& output) : m_output(output) {}
+
+  protected:
+    int overflow(int character) override;    
+    
+  };
+
+  class StringStream : public std::ostream {
+    StringBuffer m_buffer;
+
+  public:
+    explicit StringStream(std::string& output);
+    
+  };
 }

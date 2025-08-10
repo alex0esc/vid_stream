@@ -7,7 +7,7 @@ namespace uif {
   void AppBase::init() {
     Window::initGlfw();
     m_window.createWindow("Ufi App");
-    m_context.init(&m_window);        
+    m_vk_context.init(&m_window);        
   }  
 
   
@@ -34,19 +34,19 @@ namespace uif {
       
       glfwPollEvents();
       
-      if(!m_context.newFrame())
+      if(!m_vk_context.newFrame())
         continue;
       
       imguiLayoutSetup();
       update();
 
-      m_context.render();     
+      m_vk_context.render();     
     }
   }
   
 
   void AppBase::destroy() {
-    m_context.destroy();
+    m_vk_context.destroy();
     m_window.destory();
   }
   

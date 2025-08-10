@@ -17,5 +17,6 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 
 #include directories and libraries
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
-target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/asio)
+target_link_libraries(${PROJECT_NAME} PRIVATE packet_manager)
 target_link_libraries(${PROJECT_NAME} PRIVATE logger)
+

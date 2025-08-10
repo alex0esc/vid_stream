@@ -8,6 +8,14 @@ endif()
 
 #compile command for clangd
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+add_custom_target(copy_compile_commands ALL
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        ${CMAKE_BINARY_DIR}/compile_commands.json
+        ${CMAKE_SOURCE_DIR}/compile_commands.json
+    DEPENDS ${CMAKE_BINARY_DIR}/compile_commands.json
+    COMMENT "Copying compile_commands.json to project root."
+)
+
 
 #create necessary directories
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/assets)
@@ -30,6 +38,7 @@ endif()
 
 #submodules
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/logger)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/packet_manager)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/ui_frame)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/client)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/server)

@@ -15,7 +15,15 @@ file(GLOB SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
 #compiltaion
 add_executable(${PROJECT_NAME} ${SOURCES})
 
+#compile as GUI app on windows
+if (WIN32)
+    set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE YES)
+endif()
+
 #include directories and libraries
+target_link_libraries(${PROJECT_NAME} PRIVATE logger)
 target_link_libraries(${PROJECT_NAME} PRIVATE ui_frame)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
-target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/asio)
+target_link_libraries(${PROJECT_NAME} PRIVATE packet_manager)
+
+

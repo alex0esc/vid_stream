@@ -8,7 +8,7 @@ namespace uif {
   class AppBase {
   protected:
     Window m_window;
-    VulkanContext m_context;
+    VulkanContext m_vk_context;
     
     float m_frame_time = 0.01;
     float m_min_frame_time = 0.01;
