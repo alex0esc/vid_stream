@@ -1,0 +1,87 @@
+#include "client.hpp"
+#include "imgui_internal.h"
+#include "logger.hpp"
+#include "uif_app_base.hpp"
+#include <filesystem>
+
+
+namespace vsa {
+  
+  void Client::onDragDrop(int count, const char* paths[]) {
+    if(count > 1) {
+      LOG_ERROR("Cant drag more than one file at a time.");
+      return;
+    }
+    ImGuiWindow* window = ImGui::GetCurrentContext()->HoveredWindow;
+    if(window == nullptr) 
+      return;
+    std::string name = window->Name;
+    if(!name.starts_with("Chat")) 
+      return;
+    if(!m_socket.is_open()) {
+      LOG_ERROR("Could not send packet because socket is not open.");
+      return;
+    }
+    if(m_file.is_open()) {
+      LOG_ERROR("Cannot send other file because current file has not finished upload.");
+      return;
+    }
+    std::filesystem::path path = std::filesystem::path(paths[0]);
+    m_file = std::fstream(path, std::ios::binary | std::ios::ate | std::ios::in);
+    if(!m_file.is_open()) {
+      LOG_ERROR("Failed to open the file which was dragged.");
+      return;
+    } 
+         
+    m_file_size = m_file.tellg();
+    m_file.seekg(0);
+    size_t name_length = path.filename().string().length();
+    auto file_header_packet = std::make_shared<Packet>(PacketType::FileLoadHeader, name_length);
+    file_header_packet->setSize(name_length);
+    memcpy(file_header_packet->m_memory, path.filename().string().data(), name_length);
+    m_packet_manager->queuePacket(file_header_packet);
+    m_chat.append("\n\n\uf15b  ");
+    m_chat.append(path.filename().string());
+    m_chat.append(" ");
+    m_chat.append(std::to_string(m_file_size));
+    m_chat.append("b\n");
+  }
+
+  void Client::init() {
+    slog::g_logger.useColor(false);
+    static slog::StringStream s_log_stream = slog::StringStream(m_log);
+    slog::g_logger.setOutStream(&s_log_stream);
+    AppBase::init();    
+    m_window.setTitle("Vid Stream");      
+    m_window.setDropCallback(std::bind(&Client::onDragDrop, this, std::placeholders::_1, std::placeholders::_2));
+
+    m_chat.reserve(10240);
+    m_log.reserve(10240);
+
+    m_chat_packet = std::make_shared<Packet>(PacketType::ChatMessage, 1024);
+    m_file_packet = std::make_shared<Packet>(PacketType::FileLoadData, 64000);
+
+    ImGuiIO& io = ImGui::GetIO();
+    io.Fonts->AddFontFromFileTTF("assets/Cousine-Regular.ttf", 18.0);
+
+    static const ImWchar icons_ranges[] = {0xf000, 0xf3ff, 0};
+    ImFontConfig icons_config;
+    icons_config.MergeMode = true;
+    icons_config.PixelSnapH = true;  
+
+    io.Fonts->AddFontFromFileTTF("assets/fa-solid-900.ttf", 50.0, &icons_config, icons_ranges);
+    io.Fonts->Build();
+    
+    m_asio_thread = std::thread([this]() {
+      m_asio_context.run();
+    });
+  }   
+  
+  
+  void Client::destroy() {
+    m_work_guard.reset();
+    m_asio_context.stop();
+    m_asio_thread.join();
+    uif::AppBase::destroy();
+  }
+}

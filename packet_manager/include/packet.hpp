@@ -1,25 +1,42 @@
 #pragma once
 #include "asio.hpp"
+#include <cstddef>
 #include <cstdint>
 #include <memory>
-using asio::ip::tcp;
+using asio::ip::tcp; 
 
-//only for gcc and gnu
-#define PACKED __attribute__((packed))
 
 namespace vsa {
   
   enum struct PacketType {
     UserInformation,
-    ChatMessage
+    ChatMessage,
+    FileLoadHeader,
+    FileLoadData,
+    FileLoadEnd,
+    FileUploadList,
+    FileDownloadRequest
   };
   
+  #ifdef _MSC_VER
+  #pragma pack(push, 1)
+  struct PacketHeader {
+    int16_t m_type = -1;
+    uint32_t m_size = 0; 
+  };
+  #pragma pack(pop)
   
-  struct PACKED PacketHeader {
-    uint16_t m_type = -1;
-    uint16_t m_size = 0; 
+  #elif defined(__clang__) || defined(__GNUC__) 
+  struct __attribute__((packed)) PacketHeader {
+    int16_t m_type = -1;
+    uint32_t m_size = 0; 
   };
   
+  #else
+   #error "Your compiler is not supported because there is no implementation to \
+   remove padding from the PacketHeader for this compiler."
+  #endif
+
   
   class Packet : public std::enable_shared_from_this<Packet> {
     using SendHandler = std::function<void(bool)>;
@@ -31,6 +48,7 @@ namespace vsa {
     void* m_memory = nullptr;
     
     Packet() = default;
+    Packet(PacketType type);
     Packet(PacketType type, size_t memory_size);
     ~Packet();
     Packet(const Packet&) = delete;
@@ -41,33 +59,11 @@ namespace vsa {
   
     void setSize(size_t size);
     size_t getSize();
+    size_t getBandwidthSize();
     void setMemorySize(size_t memory_size);
     PacketType getType();
+    int getTypeInt();
     void setType(PacketType type);
   };
-  
-  
-  class PacketManager : public std::enable_shared_from_this<PacketManager> {
-    using DisconnectHandler = std::function<void()>;
-    using PacketHandler = std::function<void(std::shared_ptr<Packet>)>;
-    
-    tcp::socket& m_socket;
-    bool m_recieveing = false;
-    DisconnectHandler m_disconnect_handler = nullptr;
-    PacketHandler m_packet_handler = nullptr;
-    
-    void doReceive();
-  public:
-    PacketManager() = delete;
-    PacketManager(tcp::socket& socket);
-    PacketManager(const PacketManager&) = delete;
-    PacketManager& operator=(const PacketManager&) = delete; 
-    
-    void startReceive();
-    void stopReceive();
-    void setPacketHandler(PacketHandler hanlder);
-    void setDisconnectHandler(DisconnectHandler handler);
-    void sendPacket(std::shared_ptr<Packet> packet);
-  };
-  
+ 
 }

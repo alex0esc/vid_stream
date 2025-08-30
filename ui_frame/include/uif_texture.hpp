@@ -8,15 +8,15 @@ namespace uif {
     VulkanContext* m_context = nullptr;
     
   public:
-    vk::DescriptorSet m_descriptor_set;
-    vk::ImageView m_image_view;
-    vk::Image m_image;
-    vk::DeviceMemory m_image_memory;
-    vk::Sampler m_sampler;
+    vk::DescriptorSet m_descriptor_set = nullptr;
+    vk::ImageView m_image_view = nullptr;
+    vk::Image m_image = nullptr;
+    vk::DeviceMemory m_image_memory = nullptr;
+    vk::Sampler m_sampler = nullptr;
 
-    uint32_t m_width;
-    uint32_t m_height;
-    vk::DeviceSize m_image_size;
+    uint32_t m_width = -1;
+    uint32_t m_height = -1;
+    vk::DeviceSize m_image_size = -1;
     
     TextureData() = default;
     TextureData(const TextureData& other) = delete;  

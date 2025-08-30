@@ -1,5 +1,6 @@
 #include "uif_context.hpp"
 #include "GLFW/glfw3.h"
+#include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "logger.hpp"
 #include "uif_util.hpp"
@@ -39,7 +40,7 @@ namespace uif {
     m_instance = vk::createInstance(create_info);
     LOG_TRACE("VkInstance created.");
     m_dldi = vk::detail::DispatchLoaderDynamic(m_instance, vkGetInstanceProcAddr);
-    LOG_TRACE("DispatchLoaderDynamic created.");
+    LOG_TRACE("VkDispatchLoaderDynamic created.");
   } 
   
 
@@ -164,7 +165,7 @@ namespace uif {
   
   void VulkanContext::setupVulkanWindow() {
     m_window->createSurface(m_instance);
-    m_window_data.Surface = m_window->m_surface;
+    m_window_data.Surface = m_window->getSurfaceKHR();
     if (!m_device_physical.getSurfaceSupportKHR(m_graphics_queue_family_index, m_window_data.Surface, m_dldi)) {
       LOG_ERROR("Window surface has no Vulkan support");
       exit(-1);
@@ -221,13 +222,11 @@ namespace uif {
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
     io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
     io.IniFilename = "config/imgui.ini";
-    io.Fonts -> AddFontFromFileTTF("assets/Cousine-Regular.ttf", 18.0);
-
 
     ImGui::StyleColorsDark();
 
     // Setup Platform/Renderer backends
-    ImGui_ImplGlfw_InitForVulkan(m_window->m_window, true);
+    ImGui_ImplGlfw_InitForVulkan(m_window->getGlfwWindow(), true);
     ImGui_ImplVulkan_InitInfo init_info = {};
     init_info.Instance = m_instance;
     init_info.PhysicalDevice = m_device_physical;
@@ -245,6 +244,18 @@ namespace uif {
     init_info.CheckVkResultFn = checkVkResult;
     ImGui_ImplVulkan_Init(&init_info);  
     LOG_TRACE("ImGUI has been setup.");
+
+    
+    ImGuiPlatformIO& platform_io = ImGui::GetPlatformIO();
+    static auto s_window = m_window;
+    static auto original_create_window = platform_io.Platform_CreateWindow;
+    
+    platform_io.Platform_CreateWindow = [](ImGuiViewport* viewport) {
+      original_create_window(viewport);
+      GLFWwindow* window = reinterpret_cast<GLFWwindow*>(viewport->PlatformHandle); 
+      glfwSetWindowUserPointer(window, s_window);
+      glfwSetDropCallback(window, s_window->glfwDropCallback);
+    };
   }
   
   

@@ -18,8 +18,9 @@ namespace vsa {
     Server(const Server&) = delete;
     Server& operator=(const Server&) = delete;  
     
+    void broadcastPacket(std::shared_ptr<Packet> message);
     
-    void broadcast(std::shared_ptr<Packet> message);
+    asio::io_context& getContext();
     
     void init();  
     void run();

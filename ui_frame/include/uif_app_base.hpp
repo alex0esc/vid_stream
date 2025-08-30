@@ -13,8 +13,8 @@ namespace uif {
     float m_frame_time = 0.01;
     float m_min_frame_time = 0.01;
     
-    virtual void update() = 0;
-    virtual void imguiLayoutSetup() = 0;
+    virtual void update() {};
+    virtual void imguiLayoutSetup();
     virtual void manageFrameTime();
         
   public:

@@ -33,23 +33,23 @@ namespace uif {
     #endif    
     
   public:
-    Window* m_window;
+    Window* m_window = nullptr;
     
-    vk::Instance m_instance;
+    vk::Instance m_instance = nullptr;
     vk::detail::DispatchLoaderDynamic m_dldi;
-    vk::PhysicalDevice m_device_physical;
-    vk::Device m_device;
+    vk::PhysicalDevice m_device_physical = nullptr;
+    vk::Device m_device = nullptr;
     
-    int32_t m_graphics_queue_family_index;
-    vk::Queue m_graphics_queue;
+    int32_t m_graphics_queue_family_index = -1;
+    vk::Queue m_graphics_queue = nullptr;
     bool m_has_compute_queue = false;
-    int32_t m_compute_queue_family_index;
-    vk::Queue m_compute_queue;
+    int32_t m_compute_queue_family_index = -1;
+    vk::Queue m_compute_queue = nullptr;
     
-    vk::DescriptorPool m_descriptor_pool;
+    vk::DescriptorPool m_descriptor_pool = nullptr;
     ImGui_ImplVulkanH_Window m_window_data;
     
-    bool m_swapchain_rebuild;    
+    bool m_swapchain_rebuild = false;    
         
     VulkanContext() = default;
     VulkanContext(const VulkanContext& other) = delete;  

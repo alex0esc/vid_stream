@@ -5,16 +5,23 @@
 
 namespace uif {
   
-  void glfw_error_callback(int error, const char* description) {
+  void glfwErrorCallback(int error, const char* description) {
     LOG_ERROR("Glfw error " << error << ": " << description); 
   }
+
+  void Window::glfwDropCallback(GLFWwindow* window, int count, const char* paths[]) {
+    auto drop_callback = static_cast<Window*>(glfwGetWindowUserPointer(window))->m_drop_callback;
+    if(drop_callback != nullptr) {
+      drop_callback(count, paths);
+    }
+  } 
 
   void Window::initGlfw() {
     if(!glfwInit() || !glfwVulkanSupported()) {
       LOG_ERROR("Failed to initialize GLFW with vulkan.");
       std::terminate();
     }
-    glfwSetErrorCallback(glfw_error_callback);
+    glfwSetErrorCallback(glfwErrorCallback);
   }
 
   
@@ -27,8 +34,20 @@ namespace uif {
     GLFWmonitor* monitor = glfwGetPrimaryMonitor();
     const GLFWvidmode* const vid_mode = glfwGetVideoMode(monitor);
     m_window = glfwCreateWindow(vid_mode->width / 2, vid_mode->height / 2, title.c_str(), nullptr, nullptr);
+    
+    //drop callback
+    glfwSetWindowUserPointer(m_window, this);
+    glfwSetDropCallback(m_window, glfwDropCallback);
 
     LOG_TRACE("GLFW window has been created.");
+  }
+
+  GLFWwindow* const Window::getGlfwWindow() {
+    return m_window;
+  }
+  
+  void Window::setDropCallback(DropCallbackHandler handler) {
+    m_drop_callback = handler;
   }
 
   void Window::setTitle(std::string title) {
@@ -73,6 +92,10 @@ namespace uif {
     checkVkResult(glfwCreateWindowSurface(instance, m_window, nullptr, &surface));
     m_surface = vk::SurfaceKHR(surface);
     LOG_TRACE("VkSurfaceKHR has been created.");
+  }
+
+  vk::SurfaceKHR& Window::getSurfaceKHR() {
+    return m_surface;
   }
 
   std::pair<int, int> Window::getFrameBufferSize() {

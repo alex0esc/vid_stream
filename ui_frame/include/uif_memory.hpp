@@ -7,13 +7,13 @@ namespace uif {
     VulkanContext* m_context = nullptr;
     
     bool m_staging = false;
-    vk::Buffer m_staging_buffer;
-    vk::DeviceMemory m_staging_memory;
+    vk::Buffer m_staging_buffer = nullptr;
+    vk::DeviceMemory m_staging_memory = nullptr;
     
   public:
     vk::DeviceSize m_size = -1;
-    vk::Buffer m_buffer;
-    vk::DeviceMemory m_memory;
+    vk::Buffer m_buffer = nullptr;
+    vk::DeviceMemory m_memory = nullptr;
     void* m_mapped_memory = nullptr;
   
     VulkanMemory() = default;
