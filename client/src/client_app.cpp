@@ -16,14 +16,14 @@ namespace vsa {
     if(window == nullptr) 
       return;
     std::string name = window->Name;
-    if(!name.starts_with("Chat")) 
+    if(!name.starts_with("Files")) 
       return;
-    if(!m_socket.is_open()) {
-      LOG_ERROR("Could not send packet because socket is not open.");
+    if(!isConnected()) {
+      LOG_ERROR("Could not send packet because there is no connection.");
       return;
     }
-    if(m_file.is_open()) {
-      LOG_ERROR("Cannot send other file because current file has not finished upload.");
+    if(isLoadingFile()) {
+      LOG_ERROR("Need to wait for download or upload to finish.");
       return;
     }
     std::filesystem::path path = std::filesystem::path(paths[0]);
@@ -31,20 +31,14 @@ namespace vsa {
     if(!m_file.is_open()) {
       LOG_ERROR("Failed to open the file which was dragged.");
       return;
-    } 
-         
+    }      
     m_file_size = m_file.tellg();
     m_file.seekg(0);
     size_t name_length = path.filename().string().length();
-    auto file_header_packet = std::make_shared<Packet>(PacketType::FileLoadHeader, name_length);
+    auto file_header_packet = std::make_shared<Packet>(PacketType::FileDataHeader, name_length);
     file_header_packet->setSize(name_length);
-    memcpy(file_header_packet->m_memory, path.filename().string().data(), name_length);
+    file_header_packet->cpyMemory(path.filename().string().data(), name_length);
     m_packet_manager->queuePacket(file_header_packet);
-    m_chat.append("\n\n\uf15b  ");
-    m_chat.append(path.filename().string());
-    m_chat.append(" ");
-    m_chat.append(std::to_string(m_file_size));
-    m_chat.append("b\n");
   }
 
   void Client::init() {
@@ -58,9 +52,10 @@ namespace vsa {
     m_chat.reserve(10240);
     m_log.reserve(10240);
 
-    m_chat_packet = std::make_shared<Packet>(PacketType::ChatMessage, 1024);
-    m_file_packet = std::make_shared<Packet>(PacketType::FileLoadData, 64000);
-
+    m_chat_packet = std::make_shared<Packet>(PacketType::ChatMessage);
+    m_chat_packet->setReservedSize(c_max_chat_length);
+    m_file_packet = std::make_shared<Packet>(PacketType::FileDataChunk);
+    m_file_packet->setReservedSize(64000);
     ImGuiIO& io = ImGui::GetIO();
     io.Fonts->AddFontFromFileTTF("assets/Cousine-Regular.ttf", 18.0);
 
@@ -79,6 +74,7 @@ namespace vsa {
   
   
   void Client::destroy() {
+    disconnect();
     m_work_guard.reset();
     m_asio_context.stop();
     m_asio_thread.join();

@@ -14,11 +14,12 @@ namespace vsa {
     PacketHandler m_send_handler = nullptr;
     
     tcp::socket& m_socket;
+    
     bool m_recieveing = false;
-    
-    
     bool m_sending = false;
+    
     uint64_t m_write_bit_rate = 50'000'000;
+    
     std::deque<std::shared_ptr<Packet>> m_packet_queue;
     
     asio::steady_timer m_packet_timer;
@@ -36,10 +37,16 @@ namespace vsa {
     
     void startReceive();
     void stopReceive();
+    
     void setReceiveHandler(PacketHandler handler);
     void setSendHandler(PacketHandler handler);
     void setDisconnectHandler(DisconnectHandler handler);
+    
     void queuePacket(std::shared_ptr<Packet> packet);
-    void setMbitWriteRate(uint32_t rate);
+    
+    uint64_t getWriteBitRate();
+    void setWriteBitRate(uint64_t rate);
+    
+    
   };
 }

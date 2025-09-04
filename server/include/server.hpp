@@ -19,6 +19,9 @@ namespace vsa {
     Server& operator=(const Server&) = delete;  
     
     void broadcastPacket(std::shared_ptr<Packet> message);
+    void updateFileList();
+    bool isFileOpened(const std::string_view& filename);
+    bool isFileEdited(const std::string_view& filename);
     
     asio::io_context& getContext();
     

@@ -1,5 +1,6 @@
 #pragma once
 #include "asio.hpp"
+#include "packet_type.hpp"
 #include <cstddef>
 #include <cstdint>
 #include <memory>
@@ -7,16 +8,6 @@ using asio::ip::tcp;
 
 
 namespace vsa {
-  
-  enum struct PacketType {
-    UserInformation,
-    ChatMessage,
-    FileLoadHeader,
-    FileLoadData,
-    FileLoadEnd,
-    FileUploadList,
-    FileDownloadRequest
-  };
   
   #ifdef _MSC_VER
   #pragma pack(push, 1)
@@ -37,19 +28,26 @@ namespace vsa {
    remove padding from the PacketHeader for this compiler."
   #endif
 
-  
+ 
   class Packet : public std::enable_shared_from_this<Packet> {
+    friend class PacketManager;
+    
     using SendHandler = std::function<void(bool)>;
     using RecieveHandler = std::function<void(std::shared_ptr<Packet>)>;
+
+    static constexpr size_t c_max_packet_size = 1'024 * 1'024;
+
+    uint32_t m_queued_count = false;
     
     PacketHeader m_header;
     size_t m_memory_size = 0;
+    uint8_t* m_memory = nullptr;
   public:
-    void* m_memory = nullptr;
+    
     
     Packet() = default;
     Packet(PacketType type);
-    Packet(PacketType type, size_t memory_size);
+    Packet(PacketType type, size_t size);
     ~Packet();
     Packet(const Packet&) = delete;
     Packet& operator=(const Packet&) = delete;  
@@ -57,13 +55,19 @@ namespace vsa {
     void static asyncReceive(tcp::socket& socket, RecieveHandler handler);
     void asyncSend(tcp::socket& socket, SendHandler handler);
   
-    void setSize(size_t size);
+    bool isQueued();
     size_t getSize();
+    void setSize(size_t size);
     size_t getBandwidthSize();
-    void setMemorySize(size_t memory_size);
+    size_t getReservedSize();
+    void setReservedSize(size_t memory_size);
     PacketType getType();
-    int getTypeInt();
     void setType(PacketType type);
+
+    bool isEmpty();
+    void* getMemory();
+    void cpyMemory(void const* source, size_t size);
+    void cpyMemoryOffset(void const* source, size_t size, size_t offset);    
   };
  
 }

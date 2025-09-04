@@ -1,5 +1,6 @@
 #include "server.hpp"
 #include "logger.hpp"
+#include "server_util.hpp"
 #include <memory>
 #ifdef _WIN32
 #include <windows.h>
@@ -10,7 +11,6 @@ namespace vsa {
 
   
   void Server::handleConnections() {
-    LOG_INFO("Listening for connections.");
     auto session = std::make_shared<Session>(m_asio_context, this);
     m_acceptor.async_accept(session->getSocket(), [this, session](const std::error_code& error) {
       handleConnections();
@@ -18,15 +18,37 @@ namespace vsa {
         LOG_ERROR("Connection with client failed.");
         return;
       }
-      session->onConnect();
-      m_sessiones.push_back(session);
-      LOG_INFO("New client connected, number of clients is now " << m_sessiones.size() << ".");
+      session->connect();
     });
   }  
 
   void Server::broadcastPacket(std::shared_ptr<Packet> packet) {
-    for(const std::shared_ptr<Session>& session : m_sessiones) 
+    for(std::shared_ptr<Session> session : m_sessiones) 
       session->getPacketManager()->queuePacket(packet);         
+  }
+  
+  void Server::updateFileList() {
+    std::string file_names = getFileList();
+    auto file_list_packet = std::make_shared<Packet>(PacketType::FileUploadList);
+    file_list_packet->setSize(file_names.length());
+    file_list_packet->cpyMemory(file_names.data(), file_names.length());
+    broadcastPacket(file_list_packet);
+  }
+
+  bool Server::isFileOpened(const std::string_view& filename) {
+    for(std::shared_ptr<Session> session : m_sessiones) {
+      if(session->m_filename == filename)
+        return true;
+    }
+    return false;
+  }
+  
+  bool Server::isFileEdited(const std::string_view& filename) {
+    for(std::shared_ptr<Session> session : m_sessiones) {
+      if(session->m_filename == filename && session->m_file_edit)
+        return true;
+    }
+    return false;  
   }
 
   asio::io_context& Server::getContext() {
@@ -37,11 +59,11 @@ namespace vsa {
     #ifdef _WIN32
       timeBeginPeriod(4);
     #endif
+    LOG_INFO("Listening for connections.");
     handleConnections();
   }  
 
   void Server::run() {
-    
     m_asio_context.run();
   }
 

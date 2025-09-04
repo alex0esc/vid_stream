@@ -1,6 +1,8 @@
 #include "client.hpp"
 #include "imgui.h"
+#include "client_util.hpp"
 #include "packet.hpp"
+#include <cfloat>
 #include <memory>
 
 namespace vsa {
@@ -44,9 +46,9 @@ namespace vsa {
     ImGui::Separator();
     ImGui::Spacing();
     
-    ImGui::InputText("Ip", m_host, 40);
-    ImGui::InputText("Port", m_port, 20);
-    ImGui::InputText("Username", m_user_name, 30);
+    ImGui::InputText("Ip", m_host, sizeof(m_host));
+    ImGui::InputText("Port", m_port, sizeof(m_port));
+    ImGui::InputText("Username", m_user_name, sizeof(m_user_name));
     if(ImGui::Button("Connect", ImVec2(130, 30)))
       connect();
     ImGui::SameLine();
@@ -57,21 +59,25 @@ namespace vsa {
     ImGui::Separator();
     ImGui::Spacing();
 
-    static int mebit = 50;
-    ImGui::SliderInt("Mebit write", &mebit, 1, 1000);
-    if(m_packet_manager != nullptr)
-     m_packet_manager->setMbitWriteRate(mebit);
+    if(ImGui::SliderInt("Mebit write", &m_mebit_write, 5, 2000, "%d", ImGuiSliderFlags_Logarithmic) && isConnected()) 
+      m_packet_manager->setWriteBitRate(m_mebit_write * 1000 * 1000);  
+    
+    ImGui::SliderInt("MeBit read", &m_mebit_read, 5, 2000, "%d", ImGuiSliderFlags_Logarithmic); 
+    if(ImGui::IsItemDeactivatedAfterEdit() && isConnected()) 
+      updateReadRate();
+    
     ImGui::End();
   }
 
   
   void Client::chatWindowSetup() {
     ImGui::Begin("Chat");
-        
-    ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(1.0, 1.0, 1.0, 0.1));
+       
     ImVec2 child_size = ImVec2(-FLT_MIN, ImGui::GetWindowHeight() - 70 - ImGui::GetCursorPosY()); 
     if(m_file.is_open()) 
       child_size = ImVec2(-FLT_MIN, ImGui::GetWindowHeight() - 100 - ImGui::GetCursorPosY());
+    ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(1.0, 1.0, 1.0, 0.1));
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(3, 3));
     ImGui::BeginChild("##chatArea",
         child_size,
         false,ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
@@ -82,21 +88,23 @@ namespace vsa {
       last_length = m_chat.length();
     }
     ImGui::EndChild();
+    ImGui::PopStyleVar();
     ImGui::PopStyleColor();
     
-    if(m_file.is_open()) {
+    if(isLoadingFile()) {
       ImGui::SetCursorPosY(ImGui::GetWindowHeight() - 92);
       ImGui::ProgressBar(static_cast<float>(m_file.tellg()) / m_file_size);
     }
     
     ImGui::SetCursorPosY(ImGui::GetWindowHeight() - 60);
-    if(ImGui::Button("Send", ImVec2(150, 50)) && m_socket.is_open()) {
-      m_chat_packet->setSize(strlen(reinterpret_cast<char*>(m_chat_packet->m_memory)) + 1);
+    size_t packet_length = strlen(static_cast<char*>(m_chat_packet->getMemory()));
+    if(ImGui::Button("Send", ImVec2(150, 50)) && isConnected() && !m_chat_packet->isQueued() && packet_length > 0) {
+      m_chat_packet->setSize(packet_length);
       m_packet_manager->queuePacket(m_chat_packet);
     }
     
     ImGui::SameLine();
-    ImGui::InputTextMultiline("##input", (char*) m_chat_packet->m_memory, 1024, ImVec2(-FLT_MIN, 50));
+    ImGui::InputTextMultiline("##input", static_cast<char*>(m_chat_packet->getMemory()), c_max_chat_length, ImVec2(-FLT_MIN, 50));
 
     ImGui::End();
   }
@@ -117,13 +125,51 @@ namespace vsa {
   }
 
   void Client::fileWindowSetup() {
-    ImGui::Begin("Files"); 
-    for(std::string filename : m_file_list) {
-      if(ImGui::Selectable(filename.c_str())) {
-        auto file_request_packet = std::make_shared<Packet>(PacketType::FileDownloadRequest);
-        file_request_packet->setSize(filename.length());
-        memcpy(file_request_packet->m_memory, filename.data(), filename.length());
-        m_packet_manager->queuePacket(file_request_packet);
+    static char search_file[256] = {};
+    static std::string selected_file;
+  
+    ImGui::Begin("Files");     
+    ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
+    
+    static std::string lower_case_search;
+    if(ImGui::InputText("##search", search_file, sizeof(search_file))) {
+       lower_case_search = toLowerCase(search_file);
+       selected_file.clear();
+    }
+    ImGui::PopItemWidth();
+    
+    ImVec2 child_size = ImGui::GetContentRegionAvail();
+    if(!selected_file.empty())
+      child_size.y -= 57;
+    ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(1.0, 1.0, 1.0, 0.1));
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(3, 3));
+    ImGui::BeginChild("##fileList", child_size, true);
+    for(const auto& filename : m_file_list) {
+      if(!filename.second.starts_with(lower_case_search) && !filename.second.ends_with(lower_case_search))
+        continue;
+      if(ImGui::Selectable(filename.first.c_str())) {
+        selected_file = filename.first;
+      }
+    }
+    ImGui::EndChild();
+    ImGui::PopStyleVar();
+    ImGui::PopStyleColor();
+    
+    if(!selected_file.empty()) {
+      ImGui::SetCursorPosY(ImGui::GetWindowHeight() - 60);
+      ImGui::Text("%s", selected_file.c_str());
+      if(ImGui::Button("Download", ImVec2(ImGui::GetContentRegionAvail().x / 2, 30)) && !isLoadingFile()) {
+        auto download_request_packet = std::make_shared<Packet>(PacketType::FileDownloadRequest);
+        download_request_packet->setSize(selected_file.length());
+        download_request_packet->cpyMemory(selected_file.data(), selected_file.length());
+        m_packet_manager->queuePacket(download_request_packet);
+      }
+      ImGui::SameLine();
+      if(ImGui::Button("Delete", ImVec2(ImGui::GetContentRegionAvail().x, 30))) {
+        auto delete_request_packet = std::make_shared<Packet>(PacketType::FileDeleteRequest);
+        delete_request_packet->setSize(selected_file.length());
+        delete_request_packet->cpyMemory(selected_file.data(), selected_file.length());
+        m_packet_manager->queuePacket(delete_request_packet);
       }
     }
     ImGui::End();

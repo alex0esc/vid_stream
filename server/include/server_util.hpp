@@ -9,7 +9,7 @@ namespace vsa {
 
   constexpr const char g_upload_directory_name[] = "uploaded_files";
 
-  inline std::filesystem::path newFilePath(std::string filename) {
+  inline std::filesystem::path newFilePath(const std::string_view& filename) {
     std::filesystem::path filepath = g_upload_directory_name;
     if(!std::filesystem::exists(filepath)) 
         std::filesystem::create_directory(filepath);
@@ -40,7 +40,7 @@ namespace vsa {
     return file_names;
   }
 
-  inline std::optional<std::filesystem::path> getFilePath(std::string filename) {
+  inline std::optional<std::filesystem::path> getFilePath(const std::string_view& filename) {
     std::filesystem::path filepath = g_upload_directory_name;
     filepath /= filename;
     if(!std::filesystem::exists(filepath)) {

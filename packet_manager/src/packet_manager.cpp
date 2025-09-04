@@ -48,7 +48,7 @@ namespace vsa {
       m_packet_timer.expires_after(m_next_wait_time);
       m_packet_timer.async_wait([this, self](const asio::error_code& error) {
         if(error) {
-          LOG_ERROR("Error inside packet timer.");
+          LOG_ERROR("Error inside packet timer, sending packets stopped.");
           m_sending = false;
           return;
         }
@@ -61,14 +61,15 @@ namespace vsa {
     
     //send packets     
     std::shared_ptr<Packet> packet = m_packet_queue.front();  
-    m_packet_queue.pop_front();  
-    m_next_wait_time += nanoseconds(packet->getBandwidthSize() * 8'000'000'000 / m_write_bit_rate);
+    m_next_wait_time += nanoseconds(packet->getBandwidthSize() * 8'000'000'000 / m_write_bit_rate);  
     
     packet->asyncSend(m_socket, [this, self, packet](bool successful) {
       if(!successful) { 
         stopReceive();
         m_disconnect_handler();
       } else {
+        m_packet_queue.pop_front();
+        packet->m_queued_count--;
         m_send_handler(packet);
         if(!m_packet_queue.empty()) {
           doSend();
@@ -87,6 +88,7 @@ namespace vsa {
     auto self = shared_from_this();
     asio::dispatch([this, self, packet]() {
       m_packet_queue.push_back(packet);
+      packet->m_queued_count++;
       if(!m_sending) {
         m_sending = true;
         m_next_wait_time = milliseconds(0);
@@ -108,7 +110,11 @@ namespace vsa {
     m_disconnect_handler = handler; 
   }
 
-  void PacketManager::setMbitWriteRate(uint32_t rate) {
-    m_write_bit_rate = rate * 1000 * 1000;
+  uint64_t PacketManager::getWriteBitRate() {
+    return m_write_bit_rate;
+  }
+
+  void PacketManager::setWriteBitRate(uint64_t rate) {
+    m_write_bit_rate = rate;
   }
 }
