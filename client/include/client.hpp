@@ -8,6 +8,8 @@ using asio::ip::tcp;
 
 
 namespace vsa {
+
+  
   
   class Client : public uif::AppBase {
     static constexpr size_t c_max_chat_length = 1024;
@@ -36,8 +38,14 @@ namespace vsa {
     std::fstream m_file;
     std::streamsize m_file_size = -1;
     std::shared_ptr<Packet> m_file_packet = nullptr;         
-    
-    std::vector<std::pair<std::string, std::string>> m_file_list;
+
+    struct ListFile {
+      std::string m_size;
+      std::string m_name;
+      std::string m_ellipsed_name;
+      std::string m_lowercase_name;
+    };
+    std::vector<ListFile> m_file_list;
 
     void dockingSpaceSetup();
     void generalWindowSetup();

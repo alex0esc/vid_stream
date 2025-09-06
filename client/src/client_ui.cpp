@@ -1,9 +1,11 @@
 #include "client.hpp"
 #include "imgui.h"
 #include "client_util.hpp"
+#include "imgui_internal.h"
 #include "packet.hpp"
 #include <cfloat>
 #include <memory>
+#include <string>
 
 namespace vsa {
   
@@ -73,14 +75,13 @@ namespace vsa {
   void Client::chatWindowSetup() {
     ImGui::Begin("Chat");
        
-    ImVec2 child_size = ImVec2(-FLT_MIN, ImGui::GetWindowHeight() - 70 - ImGui::GetCursorPosY()); 
-    if(m_file.is_open()) 
-      child_size = ImVec2(-FLT_MIN, ImGui::GetWindowHeight() - 100 - ImGui::GetCursorPosY());
+    ImVec2 child_size = isLoadingFile() ?
+      ImVec2(-FLT_MIN, ImGui::GetWindowHeight() - 100 - ImGui::GetCursorPosY()) :
+      ImVec2(-FLT_MIN, ImGui::GetWindowHeight() - 70 - ImGui::GetCursorPosY()); 
+    
     ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(1.0, 1.0, 1.0, 0.1));
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(3, 3));
-    ImGui::BeginChild("##chatArea",
-        child_size,
-        false,ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(4, 4));
+    ImGui::BeginChild("##chatArea", child_size, true);
     ImGui::TextWrapped("%s", m_chat.data());
     static size_t last_length = 0;
     if(m_chat.length() != last_length) {
@@ -91,10 +92,9 @@ namespace vsa {
     ImGui::PopStyleVar();
     ImGui::PopStyleColor();
     
-    if(isLoadingFile()) {
-      ImGui::SetCursorPosY(ImGui::GetWindowHeight() - 92);
+    ImGui::Spacing();
+    if(isLoadingFile()) 
       ImGui::ProgressBar(static_cast<float>(m_file.tellg()) / m_file_size);
-    }
     
     ImGui::SetCursorPosY(ImGui::GetWindowHeight() - 60);
     size_t packet_length = strlen(static_cast<char*>(m_chat_packet->getMemory()));
@@ -142,22 +142,43 @@ namespace vsa {
     if(!selected_file.empty())
       child_size.y -= 57;
     ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(1.0, 1.0, 1.0, 0.1));
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(3, 3));
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(4, 4));
     ImGui::BeginChild("##fileList", child_size, true);
-    for(const auto& filename : m_file_list) {
-      if(!filename.second.starts_with(lower_case_search) && !filename.second.ends_with(lower_case_search))
+    static float previos_width = 0;
+    for(ListFile& list_file : m_file_list) {
+      if(!list_file.m_lowercase_name.starts_with(lower_case_search)
+      && !list_file.m_lowercase_name.ends_with(lower_case_search))
         continue;
-      if(ImGui::Selectable(filename.first.c_str())) {
-        selected_file = filename.first;
-      }
+      
+      //selectable
+      ImGui::PushID(list_file.m_name.c_str());
+      if(ImGui::Selectable("##row", false, ImGuiSelectableFlags_None, ImVec2(ImGui::GetContentRegionAvail().x, 0))) 
+        selected_file = list_file.m_name;
+      ImGui::PopID();
+      
+      //name text
+      ImGui::SameLine();
+      ImGui::SetCursorPosX(0);
+      
+      if(ImGui::GetWindowWidth() != previos_width || list_file.m_ellipsed_name.empty()) 
+        list_file.m_ellipsed_name = getTextEllipsed(list_file.m_name, ImGui::GetWindowWidth() - 130);
+        
+      ImGui::TextUnformatted(list_file.m_ellipsed_name.c_str());
+
+      //size text
+      ImGui::SameLine();
+      ImGui::SetCursorPosX(ImGui::GetWindowWidth() - 125);
+      
+      ImGui::Text("%s", list_file.m_size.c_str());
     }
+    previos_width = ImGui::GetWindowWidth();
     ImGui::EndChild();
     ImGui::PopStyleVar();
     ImGui::PopStyleColor();
     
     if(!selected_file.empty()) {
       ImGui::SetCursorPosY(ImGui::GetWindowHeight() - 60);
-      ImGui::Text("%s", selected_file.c_str());
+      ImGui::Text("%s", getTextEllipsed(selected_file, ImGui::GetWindowWidth() - 15).c_str());
       if(ImGui::Button("Download", ImVec2(ImGui::GetContentRegionAvail().x / 2, 30)) && !isLoadingFile()) {
         auto download_request_packet = std::make_shared<Packet>(PacketType::FileDownloadRequest);
         download_request_packet->setSize(selected_file.length());

@@ -29,6 +29,8 @@ namespace vsa {
     void onPacketSend(std::shared_ptr<Packet> packet);
     void onConnect();
     void onDisconnect();
+
+    void sendChatMessage(const std::string_view& message);
     
   public:
     Session() = delete;

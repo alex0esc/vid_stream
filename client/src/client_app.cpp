@@ -64,7 +64,7 @@ namespace vsa {
     icons_config.MergeMode = true;
     icons_config.PixelSnapH = true;  
 
-    io.Fonts->AddFontFromFileTTF("assets/fa-solid-900.ttf", 50.0, &icons_config, icons_ranges);
+    io.Fonts->AddFontFromFileTTF("assets/fa-solid-900.ttf", 17.0, &icons_config, icons_ranges);
     io.Fonts->Build();
     
     m_asio_thread = std::thread([this]() {

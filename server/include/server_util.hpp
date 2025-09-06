@@ -1,5 +1,4 @@
 #include "logger.hpp"
-#include <fstream>
 #include <optional>
 #include <string>
 #include <filesystem>
@@ -28,16 +27,17 @@ namespace vsa {
   } 
 
   inline std::string getFileList() {
-    std::string file_names = std::string();
+    std::string filenames = std::string();
     std::filesystem::path filepath = g_upload_directory_name;
     for(const auto& file : std::filesystem::directory_iterator(filepath)) {
       if(!file.is_regular_file())
         continue;
-      if(file_names.length() != 0)
-        file_names.push_back('\0');
-      file_names.append(file.path().filename().string());
+      size_t file_size = std::filesystem::file_size(file);
+      filenames.append(reinterpret_cast<char*>(&file_size), sizeof(size_t));
+      filenames.append(file.path().filename().string());
+      filenames.push_back('\0');
     }
-    return file_names;
+    return filenames;
   }
 
   inline std::optional<std::filesystem::path> getFilePath(const std::string_view& filename) {

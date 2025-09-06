@@ -42,12 +42,20 @@ namespace vsa {
     } break;
 
     case PacketType::FileUploadList: {
-      std::string list_string = std::string(static_cast<char*>(packet->getMemory()), packet->getSize());
-      std::stringstream list_stream(list_string);
-      std::string file_name;
       m_file_list.clear();
-      while(std::getline(list_stream, file_name, '\0'))  
-        m_file_list.push_back(std::pair(file_name, toLowerCase(file_name)));  
+      char* list = static_cast<char*>(packet->getMemory());
+      size_t string_start = 8;
+      for(size_t i = 8; i < packet->getSize(); i++) {
+        if(list[i] == '\0') {
+          m_file_list.emplace_back(
+            getSizeText(*reinterpret_cast<size_t*>(list + string_start - 8)),
+            std::string(list + string_start, i - string_start),
+            std::string(),
+            toLowerCase(std::string_view(list + string_start, i - string_start)));
+          string_start = i + 1 + 8;
+          i += 8;
+        }
+      }  
     } break;
 
     case PacketType::FileDataHeader: {   

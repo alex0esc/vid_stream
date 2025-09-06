@@ -39,9 +39,7 @@ namespace vsa {
     case PacketType::ChatMessage: {
       if(m_chat_packet->isQueued())
         return;
-      m_chat_packet->setSize(m_user_name.length() + packet->getSize() + 2);
-      m_chat_packet->cpyMemoryOffset(packet->getMemory(), packet->getSize(), m_user_name.length() + 2);
-      m_server->broadcastPacket(m_chat_packet);
+      sendChatMessage(std::string_view(static_cast<char*>(packet->getMemory()), packet->getSize()));
     } break;
       
     case PacketType::FileDataHeader: {   
@@ -54,7 +52,8 @@ namespace vsa {
       m_filename = std::string(static_cast<char*>(packet->getMemory()), packet->getSize()); 
       auto path = newFilePath(m_filename);
       m_file = std::fstream(path, std::ios::binary | std::ios::trunc | std::ios::out);
-      LOG_INFO("Upload for file " << m_filename << " has started.");
+      sendChatMessage("\uf15b " + m_filename);
+      LOG_INFO("Upload for file " << m_filename << " was started by.");
     } break;
       
     case PacketType::FileDataChunk: {  
@@ -98,7 +97,7 @@ namespace vsa {
     } break;
 
     case PacketType::FileDeleteRequest: {
-      std::string_view filename = std::string_view(static_cast<char*>(packet->getMemory()), packet->getSize());
+      std::string filename = std::string(static_cast<char*>(packet->getMemory()), packet->getSize());
       auto filepath = getFilePath(filename);
       if(!filepath.has_value()) {
         LOG_WARN("Requested file " << filename << " does not exist and can not be deleted.");
@@ -109,8 +108,9 @@ namespace vsa {
         return;
       }
       std::filesystem::remove(filepath.value());
-      LOG_INFO("Deleted " << filename << " from uploaded files.");
+      sendChatMessage("\uf00d " + filename);
       m_server->updateFileList();
+      LOG_INFO("Deleted " << filename << " from uploaded files.");
     } break;
 
     case PacketType::UpdateWriteRate: {
@@ -169,6 +169,12 @@ namespace vsa {
     m_server->m_sessiones.remove(shared_from_this());
     LOG_INFO("Client disconnected (" << m_server->m_sessiones.size() << ").");
     m_file.close();
+  }
+
+  void Session::sendChatMessage(const std::string_view& message) {
+    m_chat_packet->setSize(m_user_name.length() + message.length() + 2);
+    m_chat_packet->cpyMemoryOffset(message.data(), message.length(), m_user_name.length() + 2);
+    m_server->broadcastPacket(m_chat_packet);
   }
 
   void Session::connect() {
