@@ -1,19 +1,19 @@
-#include "logger.hpp"
 #include <optional>
 #include <string>
 #include <filesystem>
-
 
 namespace vsa {
 
   constexpr const char g_upload_directory_name[] = "uploaded_files";
 
+  inline void createUploadDirectory() {
+    if(!std::filesystem::exists(g_upload_directory_name))
+      std::filesystem::create_directory(g_upload_directory_name);
+  }
+
   inline std::filesystem::path newFilePath(const std::string_view& filename) {
     std::filesystem::path filepath = g_upload_directory_name;
-    if(!std::filesystem::exists(filepath)) 
-        std::filesystem::create_directory(filepath);
-    
-    filepath /= std::filesystem::path(filename);
+    filepath /= filename;
     
     while(std::filesystem::exists(filepath)) {
       size_t last_dot = filepath.filename().string().find_last_of(".");
@@ -28,8 +28,7 @@ namespace vsa {
 
   inline std::string getFileList() {
     std::string filenames = std::string();
-    std::filesystem::path filepath = g_upload_directory_name;
-    for(const auto& file : std::filesystem::directory_iterator(filepath)) {
+    for(const auto& file : std::filesystem::directory_iterator(g_upload_directory_name)) {
       if(!file.is_regular_file())
         continue;
       size_t file_size = std::filesystem::file_size(file);
@@ -43,10 +42,9 @@ namespace vsa {
   inline std::optional<std::filesystem::path> getFilePath(const std::string_view& filename) {
     std::filesystem::path filepath = g_upload_directory_name;
     filepath /= filename;
-    if(!std::filesystem::exists(filepath)) {
-      LOG_ERROR("The file " << filename << " does not exist.");
+
+    if(!std::filesystem::exists(filepath)) 
       return std::nullopt;
-    }
     return filepath;
   }
 }

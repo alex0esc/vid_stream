@@ -1,7 +1,6 @@
 #include "server.hpp"
 #include "logger.hpp"
 #include "server_util.hpp"
-#include <memory>
 #ifdef _WIN32
 #include <windows.h>
 #include <timeapi.h>
@@ -60,6 +59,7 @@ namespace vsa {
       timeBeginPeriod(4);
     #endif
     LOG_INFO("Listening for connections.");
+    createUploadDirectory();
     handleConnections();
   }  
 

@@ -1,9 +1,7 @@
 #include "client.hpp"
 #include "imgui_internal.h"
 #include "logger.hpp"
-#include "uif_app_base.hpp"
-#include <filesystem>
-
+#include "client_util.hpp"
 
 namespace vsa {
   
@@ -45,6 +43,9 @@ namespace vsa {
     slog::g_logger.useColor(false);
     static slog::StringStream s_log_stream = slog::StringStream(m_log);
     slog::g_logger.setOutStream(&s_log_stream);
+    
+    createDownloadDirectory();
+    
     AppBase::init();    
     m_window.setTitle("Vid Stream");      
     m_window.setDropCallback(std::bind(&Client::onDragDrop, this, std::placeholders::_1, std::placeholders::_2));
@@ -56,14 +57,13 @@ namespace vsa {
     m_chat_packet->setReservedSize(c_max_chat_length);
     m_file_packet = std::make_shared<Packet>(PacketType::FileDataChunk);
     m_file_packet->setReservedSize(64000);
+    
     ImGuiIO& io = ImGui::GetIO();
     io.Fonts->AddFontFromFileTTF("assets/Cousine-Regular.ttf", 18.0);
-
     static const ImWchar icons_ranges[] = {0xf000, 0xf3ff, 0};
     ImFontConfig icons_config;
     icons_config.MergeMode = true;
     icons_config.PixelSnapH = true;  
-
     io.Fonts->AddFontFromFileTTF("assets/fa-solid-900.ttf", 17.0, &icons_config, icons_ranges);
     io.Fonts->Build();
     

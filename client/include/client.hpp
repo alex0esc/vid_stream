@@ -2,7 +2,6 @@
 #include "uif_app_base.hpp"
 #include "asio/executor_work_guard.hpp"
 #include "packet_manager.hpp"
-#include "packet.hpp"
 #include <fstream>
 using asio::ip::tcp;
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "session.hpp"
+#include <list>
 
 namespace vsa {
 

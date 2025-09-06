@@ -5,11 +5,14 @@
 namespace vsa {
 
  constexpr const char g_download_directory_name[] = "downloads"; 
+ 
+  inline void createDownloadDirectory() {
+    if(!std::filesystem::exists(g_download_directory_name))
+      std::filesystem::create_directory(g_download_directory_name);
+  }
 
-  inline std::filesystem::path getFilePath(const std::string_view& filename) {
+  inline std::filesystem::path newFilePath(const std::string_view& filename) {
     std::filesystem::path filepath = g_download_directory_name;
-    if(!std::filesystem::exists(filepath)) 
-        std::filesystem::create_directory(filepath);
     filepath /= filename;          
     return filepath;
   }

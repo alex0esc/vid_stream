@@ -1,9 +1,6 @@
 #include "client.hpp"
 #include "logger.hpp"
-#include "packet.hpp"
 #include "client_util.hpp"
-#include <memory>
-
 
 namespace vsa {
   
@@ -61,7 +58,7 @@ namespace vsa {
     case PacketType::FileDataHeader: {   
       m_file_size = *static_cast<size_t*>(packet->getMemory());
       std::string filename = std::string(static_cast<char*>(packet->getMemory()) + sizeof(size_t), packet->getSize() - sizeof(size_t));
-      auto filepath = getFilePath(filename);
+      auto filepath = newFilePath(filename);
       m_file = std::fstream(filepath, std::ios::binary | std::ios::trunc | std::ios::out);
     } break;
       

@@ -1,9 +1,6 @@
 #include "session.hpp"
 #include "logger.hpp"
-#include "packet.hpp"
 #include "server.hpp"
-#include <cstring>
-#include <filesystem>
 #include "server_util.hpp"
 
 
@@ -84,8 +81,8 @@ namespace vsa {
         LOG_WARN("Requested file " << filename << " is currently beeing edited.");
         return;
       }
-      m_filename = filename;
       m_file = std::fstream(filepath.value(), std::ios::binary | std::ios::ate | std::ios::in);
+      m_filename = filename;
       m_file_size = m_file.tellg();
       m_file.seekg(0);
       auto file_header_packet = std::make_shared<Packet>(PacketType::FileDataHeader);
