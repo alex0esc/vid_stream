@@ -1,5 +1,6 @@
 #include "client.hpp"
 #include "logger.hpp"
+#include "asio/connect.hpp"
 #include "client_util.hpp"
 
 namespace vsa {

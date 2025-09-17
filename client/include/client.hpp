@@ -4,6 +4,7 @@
 #include "packet_manager.hpp"
 #include "client_util.hpp"
 #include <fstream>
+#include <thread>
 using asio::ip::tcp;
 
 

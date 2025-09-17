@@ -1,5 +1,5 @@
 #pragma once
-#include "asio.hpp"
+#include "asio/ip/tcp.hpp"
 #include "packet_type.hpp"
 #include <cstdint>
 #include <memory>
