@@ -1,5 +1,5 @@
 #include "client.hpp"
-#include "logger.hpp"
+#include <iostream>
 
 
 int main() {        
@@ -9,10 +9,8 @@ int main() {
         client.run();
         client.destroy();
     } catch (std::exception& error) {
-        LOG_ERROR(error.what());
+        std::cout<< error.what() << std::endl;
     }
-    LOG_INFO("Press any button to close...");
-    std::cin.get();
 }
 
 #ifdef _WIN32

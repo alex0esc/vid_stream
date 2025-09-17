@@ -10,6 +10,4 @@ int main() {
   } catch (const std::exception& error) {
     LOG_ERROR(error.what());
   }
-  std::cout << "Press enter to exit..." << std::endl;
-  std::cin.get();
 }

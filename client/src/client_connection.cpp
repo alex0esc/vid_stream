@@ -12,11 +12,12 @@ namespace vsa {
     m_packet_manager->setSendHandler(std::bind(&Client::onPacketSend, this, std::placeholders::_1));
     
     //send user data
-    auto user_data_packet = std::make_shared<Packet>(PacketType::UserInformation);
-    user_data_packet->setSize(strlen(m_user_name));
-    user_data_packet->cpyMemory(m_user_name, user_data_packet->getSize());
+    auto user_data_packet = std::make_shared<Packet>(PacketType::UserInfo);
+    user_data_packet->setReservedSize(100);
+    user_data_packet->setString(m_config["password"]);
+    user_data_packet->setStringOffset(std::string_view("\0", 1), user_data_packet->getSize());
+    user_data_packet->setStringOffset(m_config["username"], user_data_packet->getSize());
     m_packet_manager->queuePacket(user_data_packet);
-
 
     m_packet_manager->setWriteBitRate(m_mebit_write * 1000 * 1000);
     updateReadRate();
@@ -33,9 +34,29 @@ namespace vsa {
 
   void Client::onPacketReceive(std::shared_ptr<Packet> packet) {
     switch(packet->getType().asInt()) {
-    case PacketType::ChatMessage: { 
-      m_chat.append(std::string(static_cast<char*>(packet->getMemory()), packet->getSize()));
-      m_chat.push_back('\n');
+    case PacketType::MessageChat: { 
+      m_chat.append(packet->asString());
+    } break;
+
+    case PacketType::MessageInfo: {
+      m_log.append("Server>> ");
+      m_log.append(packet->asString());
+      m_log.push_back('\n');
+    } break;
+
+    case PacketType::FileDataHeader: {   
+      m_file_size = *static_cast<size_t*>(packet->getMemory());
+      std::string_view filename = std::string_view(static_cast<char*>(packet->getMemory()) + sizeof(size_t), packet->getSize() - sizeof(size_t));
+      auto filepath = newFilePath(filename);
+      m_file = std::fstream(filepath, std::ios::binary | std::ios::trunc | std::ios::out);
+    } break;
+      
+    case PacketType::FileDataChunk: {  
+      m_file.write(static_cast<char*>(packet->getMemory()), packet->getSize());
+    } break;
+      
+    case PacketType::FileDataEnd: {
+      m_file.close();
     } break;
 
     case PacketType::FileUploadList: {
@@ -55,21 +76,6 @@ namespace vsa {
       }  
     } break;
 
-    case PacketType::FileDataHeader: {   
-      m_file_size = *static_cast<size_t*>(packet->getMemory());
-      std::string filename = std::string(static_cast<char*>(packet->getMemory()) + sizeof(size_t), packet->getSize() - sizeof(size_t));
-      auto filepath = newFilePath(filename);
-      m_file = std::fstream(filepath, std::ios::binary | std::ios::trunc | std::ios::out);
-    } break;
-      
-    case PacketType::FileDataChunk: {  
-      m_file.write(static_cast<char*>(packet->getMemory()), packet->getSize());
-    } break;
-      
-    case PacketType::FileDataEnd: {
-      m_file.close();
-    } break;
-
     default:
       LOG_WARN("Can not handle packet of type " << packet->getType().asInt() << ".");
       break;
@@ -77,21 +83,26 @@ namespace vsa {
   } 
   
   void Client::onPacketSend(std::shared_ptr<Packet> packet) {    
-    if(packet->getType() != PacketType::FileDataHeader && packet->getType() != PacketType::FileDataChunk)
-      return;    
-    size_t remaining = m_file_size - m_file.tellg();
-    if(remaining <= 0) {
-      auto file_end_packet = std::make_shared<Packet>(PacketType::FileDataEnd);
-      m_packet_manager->queuePacket(file_end_packet);
-      m_file.close();
-      return;
-    }
-    size_t chunk_size = 64'000;
-    if(remaining < chunk_size) 
-      chunk_size = remaining;
-    m_file_packet->setSize(chunk_size);
-    m_file.read(static_cast<char*>(m_file_packet->getMemory()), chunk_size);
-    m_packet_manager->queuePacket(m_file_packet);    
+    switch(packet->getType().asInt()) {
+    case PacketType::FileDataHeader: case PacketType::FileDataChunk: {
+      size_t remaining = m_file_size - m_file.tellg();
+      if(remaining <= 0) {
+        auto file_end_packet = std::make_shared<Packet>(PacketType::FileDataEnd);
+        m_packet_manager->queuePacket(file_end_packet);
+        m_file.close();
+        return;
+      }
+      size_t chunk_size = 64'000;
+      if(remaining < chunk_size) 
+        chunk_size = remaining;
+      m_file_packet->setSize(chunk_size);
+      m_file.read(static_cast<char*>(m_file_packet->getMemory()), chunk_size);
+      m_packet_manager->queuePacket(m_file_packet);
+    } break;
+
+    default:
+      break;
+    }       
   }
 
   bool Client::isConnected() {
@@ -110,12 +121,12 @@ namespace vsa {
   void Client::connect() {
     if(isConnected())
       return;
-    if(strlen(m_user_name) == 0) {
+    if(m_config["username"].length() == 0) {
       LOG_ERROR("Can not connect without username.");
       return;
     }
-    LOG_INFO("Trying to connect to " << m_host << ":" << m_port << ".");
-    m_resolver.async_resolve(m_host, m_port, [this](const asio::error_code& error, tcp::resolver::results_type results) {
+    LOG_INFO("Trying to connect to " << m_config["address"] << ":" << m_config["port"] << ".");
+    m_resolver.async_resolve(m_config["address"], m_config["port"], [this](const asio::error_code& error, tcp::resolver::results_type results) {
       if(error) {
         LOG_ERROR("Could not resolve address.");
         return;

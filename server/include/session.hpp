@@ -14,7 +14,10 @@ namespace vsa {
     tcp::socket m_socket;
     std::shared_ptr<PacketManager> m_packet_manager = nullptr;
     
-    std::string m_user_name = std::string();
+    bool m_registered = false;
+    bool m_disconnecting = false;
+    std::string m_username = std::string();
+
     std::shared_ptr<Packet> m_chat_packet = nullptr;
     
     std::fstream m_file;
@@ -28,7 +31,10 @@ namespace vsa {
     void onConnect();
     void onDisconnect();
 
-    void sendChatMessage(const std::string_view& message);
+    void sendInfoMessage(const std::string_view& message);
+    void broadcastChatMessage(const std::string_view& message);
+    void broadcastFileList();
+
     
   public:
     Session() = delete;
@@ -37,7 +43,7 @@ namespace vsa {
     Session& operator=(const Session&) = delete;  
     
     void connect();
-    void disconnect();
+    void disconnect(const std::string_view& message = "");
   
     tcp::socket& getSocket();
     std::shared_ptr<PacketManager> getPacketManager();

@@ -1,11 +1,13 @@
+#include <string>
 
 namespace vsa {
   
   class PacketType {
   public:
     enum Value {
-      UserInformation,
-      ChatMessage,
+      UserInfo,
+      MessageInfo,
+      MessageChat,
       FileDataHeader,
       FileDataChunk,
       FileDataEnd,

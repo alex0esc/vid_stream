@@ -1,19 +1,26 @@
+#pragma once
 #include "imgui.h"
+#include <fstream>
 #include <string>
 #include <filesystem>
+#include <format>
+#include <unordered_map>
 
 namespace vsa {
+  namespace fs = std::filesystem;
+  using Config = std::unordered_map<std::string, std::string>;
+  
+  const fs::path g_download_directory_name = "downloads"; 
+  const fs::path g_config_path = fs::path("config") / "client.yaml";
 
- constexpr const char g_download_directory_name[] = "downloads"; 
  
   inline void createDownloadDirectory() {
-    if(!std::filesystem::exists(g_download_directory_name))
-      std::filesystem::create_directory(g_download_directory_name);
+    if(!fs::exists(g_download_directory_name))
+      fs::create_directory(g_download_directory_name);
   }
 
   inline std::filesystem::path newFilePath(const std::string_view& filename) {
-    std::filesystem::path filepath = g_download_directory_name;
-    filepath /= filename;          
+    fs::path filepath = g_download_directory_name / filename;          
     return filepath;
   }
   
@@ -55,5 +62,64 @@ namespace vsa {
     if(new_text_length < text.length()) 
       new_text.append("...");
     return new_text;
+  }
+
+  inline int FilterSpace(ImGuiInputTextCallbackData* callback) {
+    if(std::isspace(callback->EventChar))
+      return 1;
+    return 0;
+  }
+
+  inline void ImguiInputTextCustom(const std::string_view& label, std::string& string, int max_length) {
+    if(string.capacity() < max_length)
+      string.reserve(max_length);
+    if(ImGui::InputText(label.data(), string.data(), string.capacity() + 1, 
+      ImGuiInputTextFlags_CallbackCharFilter, FilterSpace)) {
+      string.resize(strlen(string.c_str()));
+    }
+  }
+  
+  inline const Config& getDefaultConfig() {
+    static const Config config = { 
+      {"address", "localhost" }, 
+      {"port", "50000" },
+      {"username", "none" },
+      {"password", "pw123" }
+    }; 
+    return config;
+  }
+
+  inline void saveConfig(const Config& config) {
+    std::fstream cfg_stream = std::fstream(g_config_path, std::ios::out | std::ios::trunc);
+    for(const auto& [key, value] : config) {
+      std::string line = key + ": " + value + "\n";
+      cfg_stream.write(line.c_str(), line.length());
+    }
+    cfg_stream.close();
+  }
+
+  inline bool loadConfig(Config& config) {
+    if(!fs::exists(g_config_path)) 
+      return false;
+    std::string cfg_line;
+    std::fstream cfg_stream = std::fstream(g_config_path, std::ios::in);
+    int line_index = 0;
+    while(std::getline(cfg_stream, cfg_line, '\n')) {
+      int lineindex = 0;
+      for(char character : cfg_line) {
+        if(std::isspace(character))
+          continue;
+        cfg_line[lineindex] = character;
+        lineindex++;
+      }
+      cfg_line.resize(lineindex);
+      int split_pos = cfg_line.find(':');
+      if(split_pos == std::string::npos) 
+        continue;
+      config.insert_or_assign(cfg_line.substr(0, split_pos), cfg_line.substr(split_pos + 1)); 
+      line_index++;
+    }
+    cfg_stream.close();
+    return true;
   }
 }

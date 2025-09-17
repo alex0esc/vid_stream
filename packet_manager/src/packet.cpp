@@ -61,7 +61,7 @@ namespace vsa {
         return;
       }
       if(packet->m_header.m_size <= 0) {
-        LOG_WARN("Recieved empty packet of type " << packet->getType().asInt() << ".");
+        LOG_TRACE("Recieved empty packet of type " << packet->getType().asInt() << ".");
         handler(packet);
         return;
       } 
@@ -128,6 +128,10 @@ namespace vsa {
     return m_memory;
   }
 
+  std::string_view Packet::asString() {
+    return std::string_view(reinterpret_cast<char*>(m_memory), m_header.m_size);
+  }
+
   void Packet::cpyMemory(void const* source, size_t size) {
     assert(size <= m_memory_size);
     memcpy(m_memory, source, size);
@@ -136,5 +140,16 @@ namespace vsa {
   void Packet::cpyMemoryOffset(void const* source, size_t size, size_t offset) {
     assert((offset + size) <= m_memory_size);
     memcpy(m_memory + offset, source, size);
+  }
+
+
+  void Packet::setString(const std::string_view& string) {
+    setSize(string.length());
+    memcpy(m_memory, string.data(), string.length());
+  }
+
+  void Packet::setStringOffset(const std::string_view& string, size_t offset) {
+    setSize(string.length() + offset);
+    memcpy(m_memory + offset, string.data(), string.length());
   }
 }

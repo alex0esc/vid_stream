@@ -35,7 +35,7 @@ namespace vsa {
     using SendHandler = std::function<void(bool)>;
     using RecieveHandler = std::function<void(std::shared_ptr<Packet>)>;
 
-    static constexpr size_t c_max_packet_size = 1'024 * 1'024;
+    static constexpr size_t c_max_packet_size = 1024 * 128;
 
     uint32_t m_queued_count = false;
     
@@ -66,8 +66,11 @@ namespace vsa {
 
     bool isEmpty();
     void* getMemory();
+    std::string_view asString();
     void cpyMemory(void const* source, size_t size);
     void cpyMemoryOffset(void const* source, size_t size, size_t offset);    
+    void setString(const std::string_view& string);
+    void setStringOffset(const std::string_view& string, size_t offset);
   };
  
 }

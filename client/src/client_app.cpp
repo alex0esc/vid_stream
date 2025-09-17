@@ -32,10 +32,8 @@ namespace vsa {
     }      
     m_file_size = m_file.tellg();
     m_file.seekg(0);
-    size_t name_length = path.filename().string().length();
-    auto file_header_packet = std::make_shared<Packet>(PacketType::FileDataHeader, name_length);
-    file_header_packet->setSize(name_length);
-    file_header_packet->cpyMemory(path.filename().string().data(), name_length);
+    auto file_header_packet = std::make_shared<Packet>(PacketType::FileDataHeader);
+    file_header_packet->setString(path.filename().string());
     m_packet_manager->queuePacket(file_header_packet);
   }
 
@@ -53,11 +51,12 @@ namespace vsa {
     m_chat.reserve(10240);
     m_log.reserve(10240);
 
-    m_chat_packet = std::make_shared<Packet>(PacketType::ChatMessage);
+    m_chat_packet = std::make_shared<Packet>(PacketType::MessageChat);
     m_chat_packet->setReservedSize(c_max_chat_length);
     m_file_packet = std::make_shared<Packet>(PacketType::FileDataChunk);
     m_file_packet->setReservedSize(64000);
     
+    LOG_INFO("Loading fonts...");
     ImGuiIO& io = ImGui::GetIO();
     io.Fonts->AddFontFromFileTTF("assets/Cousine-Regular.ttf", 18.0);
     static const ImWchar icons_ranges[] = {0xf000, 0xf3ff, 0};
@@ -66,6 +65,9 @@ namespace vsa {
     icons_config.PixelSnapH = true;  
     io.Fonts->AddFontFromFileTTF("assets/fa-solid-900.ttf", 17.0, &icons_config, icons_ranges);
     io.Fonts->Build();
+
+    LOG_INFO("Loading config...");
+    loadConfig(m_config);
     
     m_asio_thread = std::thread([this]() {
       m_asio_context.run();
@@ -78,6 +80,8 @@ namespace vsa {
     m_work_guard.reset();
     m_asio_context.stop();
     m_asio_thread.join();
+    LOG_INFO("Saving config...");
+    saveConfig(m_config);
     uif::AppBase::destroy();
   }
 }

@@ -2,18 +2,18 @@
 #include "uif_app_base.hpp"
 #include "asio/executor_work_guard.hpp"
 #include "packet_manager.hpp"
+#include "client_util.hpp"
 #include <fstream>
 using asio::ip::tcp;
 
 
 namespace vsa {
 
-  
-  
   class Client : public uif::AppBase {
     static constexpr size_t c_max_chat_length = 1024;
 
     std::string m_log = std::string();
+    Config m_config = getDefaultConfig();
     
     std::thread m_asio_thread;
     asio::io_context m_asio_context;
@@ -22,9 +22,6 @@ namespace vsa {
         
     tcp::socket m_socket = tcp::socket(m_asio_context);
     tcp::resolver m_resolver = tcp::resolver(m_asio_context);
-    char m_host[40] = {};
-    char m_port[20] = {};
-    char m_user_name[30] = {};
 
     int m_mebit_write = 50;
     int m_mebit_read = 50;

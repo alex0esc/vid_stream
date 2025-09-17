@@ -1,5 +1,4 @@
 #include "client.hpp"
-#include "client_util.hpp"
 
 
 namespace vsa {
@@ -43,9 +42,10 @@ namespace vsa {
     ImGui::Separator();
     ImGui::Spacing();
     
-    ImGui::InputText("Ip", m_host, sizeof(m_host));
-    ImGui::InputText("Port", m_port, sizeof(m_port));
-    ImGui::InputText("Username", m_user_name, sizeof(m_user_name));
+    ImguiInputTextCustom("Ip", m_config["address"], 50);
+    ImguiInputTextCustom("Port", m_config["port"], 20);
+    ImguiInputTextCustom("Username", m_config["username"], 50);
+    ImguiInputTextCustom("Password", m_config["password"], 30);
     if(ImGui::Button("Connect", ImVec2(130, 30)))
       connect();
     ImGui::SameLine();

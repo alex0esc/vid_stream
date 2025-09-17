@@ -1,6 +1,5 @@
 #include "server.hpp"
 #include "logger.hpp"
-#include "server_util.hpp"
 #ifdef _WIN32
 #include <windows.h>
 #include <timeapi.h>
@@ -8,7 +7,15 @@
 
 namespace vsa {
 
-  
+
+  Server::Server(uint16_t port) : m_acceptor(tcp::acceptor(m_asio_context)) {
+    tcp::endpoint endpoint = tcp::endpoint(tcp::v4(), port);
+    m_acceptor.open(endpoint.protocol());
+    m_acceptor.set_option(asio::socket_base::reuse_address(true));
+    m_acceptor.bind(endpoint);
+    m_acceptor.listen();
+  } 
+
   void Server::handleConnections() {
     auto session = std::make_shared<Session>(m_asio_context, this);
     m_acceptor.async_accept(session->getSocket(), [this, session](const std::error_code& error) {
@@ -24,14 +31,6 @@ namespace vsa {
   void Server::broadcastPacket(std::shared_ptr<Packet> packet) {
     for(std::shared_ptr<Session> session : m_sessiones) 
       session->getPacketManager()->queuePacket(packet);         
-  }
-  
-  void Server::updateFileList() {
-    std::string file_names = getFileList();
-    auto file_list_packet = std::make_shared<Packet>(PacketType::FileUploadList);
-    file_list_packet->setSize(file_names.length());
-    file_list_packet->cpyMemory(file_names.data(), file_names.length());
-    broadcastPacket(file_list_packet);
   }
 
   bool Server::isFileOpened(const std::string_view& filename) {
@@ -50,16 +49,21 @@ namespace vsa {
     return false;  
   }
 
-  asio::io_context& Server::getContext() {
-    return m_asio_context;
+  bool Server::isPasswordCorrect(const std::string_view& password) {
+    return password == m_config["password"];
   }
-  
+
   void Server::init() {
     #ifdef _WIN32
       timeBeginPeriod(4);
     #endif
-    LOG_INFO("Listening for connections.");
+    
+    LOG_INFO("Loading server config...");
     createUploadDirectory();
+    if(!loadConfig(m_config))
+      saveConfig(m_config);
+    
+    LOG_INFO("Listening for connections...");
     handleConnections();
   }  
 
@@ -67,7 +71,10 @@ namespace vsa {
     m_asio_context.run();
   }
 
-  void Server::shutdown() {
+  void Server::shutdown() {  
+    LOG_INFO("Server shutting down.");
+    m_acceptor.close();
+    m_asio_context.stop();
     #ifdef _WIN32
       timeEndPeriod(4);
     #endif

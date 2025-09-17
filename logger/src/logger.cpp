@@ -18,24 +18,24 @@ namespace slog {
     switch(type) {
     case LogType::Error:
       if(m_use_color)
-        return *this << "[\033[31mError\033[0m]\t";
+        return *this << "[\033[31mError\033[0m] ";
       else 
-        return *this << "[Error]\t";
+        return *this << "[Error] ";
     case LogType::Warn:
       if(m_use_color)
-        return *this << "[\033[33mWarn\033[0m]\t";
+        return *this << "[\033[33mWarn\033[0m] ";
       else
-        return *this << "[Warn]\t";
+        return *this << "[Warn] ";
     case LogType::Info:
       if(m_use_color)
-        return *this << "[\033[36mInfo\033[0m]\t";
+        return *this << "[\033[36mInfo\033[0m] ";
       else
-        return *this << "[Info]\t";
+        return *this << "[Info] ";
     case LogType::Trace:
       if(m_use_color)
-        return *this << "[\033[35mTrace\033[0m]\t";
+        return *this << "[\033[35mTrace\033[0m] ";
       else
-        return *this << "[Trace]\t";
+        return *this << "[Trace] ";
     };
     
   }
