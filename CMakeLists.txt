@@ -40,6 +40,7 @@ endif()
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/logger)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/packet_manager)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/ui_frame)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/ffmpeg-build)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/client)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/server)
 

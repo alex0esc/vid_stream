@@ -9,3 +9,7 @@ run_build.sh
 run_build_release.sh
 uploaded_files/*
 downloads/*
+ffmpeg/*
+ffmpeg-build/lib/*
+ffmpeg-build/include/*
+ffmpeg-build/share/*
