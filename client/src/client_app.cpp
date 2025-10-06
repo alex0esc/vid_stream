@@ -3,10 +3,6 @@
 #include "logger.hpp"
 #include "client_util.hpp"
 
-extern "C" {
-  #include <libavdevice/avdevice.h>
-}
-
 namespace vsa {
   
   void Client::onDragDrop(int count, const char* paths[]) {
@@ -40,24 +36,6 @@ namespace vsa {
     file_header_packet->setString(path.filename().string());
     m_packet_manager->queuePacket(file_header_packet);
   }
-
-
-
-  
-  void list_devices() {
-    avdevice_register_all();
-    void* opaque = nullptr;
-    const AVInputFormat* ifmt = nullptr;
-
-    while ((ifmt = av_input_audio_device_next(ifmt))) {
-        LOG_INFO("Audio input device: " << ifmt->name);
-    }
-    while ((ifmt = av_input_video_device_next(ifmt))) {
-        LOG_INFO("Video input device: " << ifmt->name);
-    }
-  }
-
-
   
 
   void Client::init() {
@@ -65,9 +43,7 @@ namespace vsa {
     static slog::StringStream s_log_stream = slog::StringStream(m_log);
     slog::g_logger.setOutStream(&s_log_stream);
     
-    createDownloadDirectory();
-
-    list_devices(); 
+    createDownloadDirectory(); 
     
     AppBase::init();    
     m_window.setTitle("Vid Stream");      

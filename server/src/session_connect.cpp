@@ -47,7 +47,7 @@ namespace vsa {
   }
 
   Session::Session(asio::io_context& context, Server* server)
-    : m_socket(tcp::socket(context)), m_server(server) { 
+    : m_server(server), m_socket(tcp::socket(context)) { 
   }
 
   std::shared_ptr<PacketManager> Session::getPacketManager() {

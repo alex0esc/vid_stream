@@ -28,7 +28,7 @@ namespace uif {
     
     void createSurface(vk::Instance instance);
     vk::SurfaceKHR& getSurfaceKHR(); 
-    GLFWwindow* const getGlfwWindow();
+    GLFWwindow* getGlfwWindow();
     
     
     static void initGlfw();

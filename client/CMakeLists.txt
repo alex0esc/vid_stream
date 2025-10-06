@@ -24,6 +24,5 @@ endif()
 target_link_libraries(${PROJECT_NAME} PRIVATE logger)
 target_link_libraries(${PROJECT_NAME} PRIVATE ui_frame)
 target_link_libraries(${PROJECT_NAME} PRIVATE packet_manager)
-target_link_libraries(${PROJECT_NAME} PRIVATE ffmpeg)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 

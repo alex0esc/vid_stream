@@ -36,14 +36,29 @@ if(CMAKE_BUILD_TYPE STREQUAL "Release")
     option(LOG_TRACE "Enable logging traces" OFF)
 endif()
 
+
+
+#build flags
+if(MSVC)
+    set(CMAKE_C_FLAGS_DEBUG   "${CMAKE_C_FLAGS_DEBUG} /MTd /Zi /Od /W4 /WX")
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd /Zi /Od /W4 /WX")
+    set(CMAKE_C_FLAGS_RELEASE   "${CMAKE_C_FLAGS_RELEASE} /MT /O2 /GL /DNDEBUG")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT /O2 /GL /DNDEBUG")
+endif()
+
+
+if((CMAKE_CXX_COMPILER_ID STREQUAL "Clang") OR (CMAKE_CXX_COMPILER_ID STREQUAL "GNU"))
+    set(CMAKE_C_FLAGS_DEBUG   "${CMAKE_C_FLAGS_DEBUG} -g -O0 -Wall")
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0 -Wall")    
+    set(CMAKE_C_FLAGS_RELEASE   "${CMAKE_C_FLAGS_RELEASE} -g -O3 -DNDEBUG")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -g -O3 -DNDEBUG")
+endif()
+
 #submodules
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/logger)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/packet_manager)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/ui_frame)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/ffmpeg-build)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/client)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/server)
 
-#build flags
-set(CMAKE_CXX_FLAGS_DEBUG "-g -O0 -Wall -Wextra -Wpedantic")
-set(CMAKE_CXX_FLAGS_RELEASE "-O3 -g -flto")
+

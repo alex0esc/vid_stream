@@ -1,5 +1,4 @@
 #include "packet_type.hpp"
-#include <string>
 
 namespace vsa {
   

@@ -42,7 +42,7 @@ namespace uif {
     LOG_TRACE("GLFW window has been created.");
   }
 
-  GLFWwindow* const Window::getGlfwWindow() {
+  GLFWwindow* Window::getGlfwWindow() {
     return m_window;
   }
   
