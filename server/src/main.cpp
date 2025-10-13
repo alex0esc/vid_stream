@@ -3,7 +3,7 @@
 
 int main() {
   try {  
-    vsa::Server server(50000);
+    vsa::Server server;
     server.init();
     server.run();
     server.shutdown();

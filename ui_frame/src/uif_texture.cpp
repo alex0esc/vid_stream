@@ -11,7 +11,7 @@ namespace uif {
     m_width = width;
     m_height = height;    
     m_image_size = width * height * 4;
-
+    
     vk::ImageCreateInfo image_info(
       vk::ImageCreateFlags(),
       vk::ImageType::e2D, 

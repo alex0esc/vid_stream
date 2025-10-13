@@ -36,13 +36,7 @@ namespace uif {
     m_context->m_device.bindBufferMemory(m_staging_buffer, m_staging_memory, 0, m_context->m_dldi);        
     m_staging = true;
   }
-
-  void VulkanMemory::map() {
-    if(m_staging)
-      m_mapped_memory = m_context->m_device.mapMemory(m_staging_memory, 0, m_size, vk::MemoryMapFlags(), m_context->m_dldi);
-    else
-      m_mapped_memory = m_context->m_device.mapMemory(m_memory, 0, m_size, vk::MemoryMapFlags(), m_context->m_dldi);
-  }
+  
   
   void VulkanMemory::uploadStaging(vk::CommandBuffer cmd_buffer) {            
       vk::BufferCopy region(0, 0, m_size);
@@ -53,7 +47,6 @@ namespace uif {
         m_context->m_dldi);
   }
 
-  
   void VulkanMemory::uploadStaging(vk::CommandPool cmd_pool, vk::Queue queue) {            
     vk::CommandBufferAllocateInfo alc_info(
       cmd_pool, 
@@ -72,6 +65,14 @@ namespace uif {
     queue.submit(submit_info);
     queue.waitIdle(m_context->m_dldi);
     m_context->m_device.freeCommandBuffers(cmd_pool, 1 , &cmd_buffer, m_context->m_dldi);
+  }
+  
+  
+  void VulkanMemory::map() {
+    if(m_staging)
+      m_mapped_memory = m_context->m_device.mapMemory(m_staging_memory, 0, m_size, vk::MemoryMapFlags(), m_context->m_dldi);
+    else
+      m_mapped_memory = m_context->m_device.mapMemory(m_memory, 0, m_size, vk::MemoryMapFlags(), m_context->m_dldi);
   }
   
   void VulkanMemory::unmap() {

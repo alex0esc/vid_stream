@@ -11,6 +11,8 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
 #options
+option(LOG_COLOR "Enable colored logging" ON)
+option(LOG_LOCATION "Enable logging file and line" ON)
 option(LOG_ERROR "Enable logging errors" ON)
 option(LOG_WARN "Enable logging warnings" ON)
 option(LOG_INFO "Enable logging info" ON)
@@ -26,6 +28,8 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/in
 
 #definitions
 target_compile_definitions(${PROJECT_NAME} PUBLIC
+    $<$<BOOL:${LOG_COLOR}>:_OPTION_LOG_COLOR>
+    $<$<BOOL:${LOG_LOCATION}>:_OPTION_LOG_LOCATION>
     $<$<BOOL:${LOG_ERROR}>:_OPTION_LOG_ERROR>
     $<$<BOOL:${LOG_WARN}>:_OPTION_LOG_WARN>
     $<$<BOOL:${LOG_INFO}>:_OPTION_LOG_INFO>

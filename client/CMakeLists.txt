@@ -18,6 +18,7 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 #compile as GUI app on windows
 if (WIN32)
     set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE YES)
+    target_link_libraries(${PROJECT_NAME} PRIVATE d3d11 dxgi)
 endif()
 
 #include directories and libraries

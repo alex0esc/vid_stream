@@ -5,6 +5,7 @@
 #include "client_util.hpp"
 #include <fstream>
 #include <thread>
+#include "screen_capturer_platform.hpp"
 using asio::ip::tcp;
 
 
@@ -24,8 +25,8 @@ namespace vsa {
     tcp::socket m_socket = tcp::socket(m_asio_context);
     tcp::resolver m_resolver = tcp::resolver(m_asio_context);
 
-    int m_mebit_write = 50;
-    int m_mebit_read = 50;
+    int m_mebit_write = 100;
+    int m_mebit_read = 100;
 
     std::shared_ptr<PacketManager> m_packet_manager = nullptr;    
 
@@ -44,23 +45,27 @@ namespace vsa {
     };
     std::vector<ListFile> m_file_list;
 
+    CapturerPlatform m_capturer;
+    
     void dockingSpaceSetup();
     void generalWindowSetup();
     void chatWindowSetup();
     void logWindowSetup();
     void fileWindowSetup();
     void imguiLayoutSetup() override;
+    
+    void update() override;
         
     void onConnect();
     void onDisconnect();
     void onPacketReceive(std::shared_ptr<Packet> packet);
     void onPacketSend(std::shared_ptr<Packet> packet);
     void onDragDrop(int count, const char* paths[]);    
+    
     bool isConnected();
     bool isLoadingFile();
     void connect();
     void disconnect();    
-
     void updateReadRate();
 
   public:

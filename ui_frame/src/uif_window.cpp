@@ -19,7 +19,7 @@ namespace uif {
   void Window::initGlfw() {
     if(!glfwInit() || !glfwVulkanSupported()) {
       LOG_ERROR("Failed to initialize GLFW with vulkan.");
-      std::terminate();
+      std::abort();
     }
     glfwSetErrorCallback(glfwErrorCallback);
   }

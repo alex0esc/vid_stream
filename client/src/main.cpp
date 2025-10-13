@@ -1,6 +1,5 @@
 #include "client.hpp"
-#include <iostream>
-
+#include "logger.hpp"
 
 int main() {        
     try {
@@ -9,7 +8,7 @@ int main() {
         client.run();
         client.destroy();
     } catch (std::exception& error) {
-        std::cout<< error.what() << std::endl;
+        LOG_ERROR(error.what());
     }
 }
 

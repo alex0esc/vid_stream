@@ -1,6 +1,6 @@
+#include "asio/connect.hpp"
 #include "client.hpp"
 #include "logger.hpp"
-#include "asio/connect.hpp"
 #include "client_util.hpp"
 
 namespace vsa {
@@ -22,6 +22,7 @@ namespace vsa {
 
     m_packet_manager->setWriteBitRate(m_mebit_write * 1000 * 1000);
     updateReadRate();
+    LOG_INFO("Successfully connected to server.");
   }
     
 
@@ -138,7 +139,6 @@ namespace vsa {
           LOG_ERROR("Could not connect to server.");
           return;
         }
-        LOG_INFO("Successfully connected to server.");
         onConnect();                      
       });                                          
     });

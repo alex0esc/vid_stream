@@ -2,6 +2,7 @@
 #include "imgui_internal.h"
 #include "logger.hpp"
 #include "client_util.hpp"
+#include "string_stream.hpp"
 
 namespace vsa {
   
@@ -39,9 +40,9 @@ namespace vsa {
   
 
   void Client::init() {
-    slog::g_logger.useColor(false);
     static slog::StringStream s_log_stream = slog::StringStream(m_log);
-    slog::g_logger.setOutStream(&s_log_stream);
+    slog::g_logger.setOutputStream(&s_log_stream);
+    slog::g_logger.addOutputFile(fs::path("config") / "client_log.txt");
     
     createDownloadDirectory(); 
     
@@ -57,7 +58,7 @@ namespace vsa {
     m_file_packet = std::make_shared<Packet>(PacketType::FileDataChunk);
     m_file_packet->setReservedSize(64000);
     
-    LOG_INFO("Loading fonts...");
+    
     ImGuiIO& io = ImGui::GetIO();
     io.Fonts->AddFontFromFileTTF("assets/Cousine-Regular.ttf", 18.0);
     static const ImWchar icons_ranges[] = {0xf000, 0xf3ff, 0};
@@ -66,14 +67,23 @@ namespace vsa {
     icons_config.PixelSnapH = true;  
     io.Fonts->AddFontFromFileTTF("assets/fa-solid-900.ttf", 17.0, &icons_config, icons_ranges);
     io.Fonts->Build();
+    LOG_INFO("Fonts loaded.");
 
-    LOG_INFO("Loading config...");
-    loadConfig(m_config);
+    
+    if(!loadConfig(m_config))
+      saveConfig(m_config);
+    LOG_INFO("Client config loaded.");
     
     m_asio_thread = std::thread([this]() {
       m_asio_context.run();
     });
+
+    m_capturer.init();
   }   
+
+  void Client::update() {
+    m_capturer.captureFrame();
+  }
   
   
   void Client::destroy() {
@@ -81,8 +91,8 @@ namespace vsa {
     m_work_guard.reset();
     m_asio_context.stop();
     m_asio_thread.join();
-    LOG_INFO("Saving config...");
     saveConfig(m_config);
+    LOG_INFO("Client config saved.");
     uif::AppBase::destroy();
   }
 }

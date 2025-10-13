@@ -32,6 +32,7 @@ if(WIN32)
 endif()
 
 #options
+option(LOG_COLOR "Enable colored logging" OFF)
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
     option(LOG_TRACE "Enable logging traces" OFF)
 endif()

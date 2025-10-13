@@ -22,8 +22,7 @@ namespace vsa {
     bool isPasswordCorrect(const std::string_view& password);
 
   public:
-    Server() = delete;
-    Server(uint16_t port);
+    Server();
     Server(const Server&) = delete;
     Server& operator=(const Server&) = delete;
       

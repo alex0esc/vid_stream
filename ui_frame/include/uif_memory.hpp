@@ -29,9 +29,9 @@ namespace uif {
       vk::Flags<vk::BufferUsageFlagBits> usage
     );
     void allocateStaging();
-    void map();
     void uploadStaging(vk::CommandBuffer cmd_buffer);
     void uploadStaging(vk::CommandPool cmd_pool, vk::Queue queue);
+    void map();
     void unmap();
     void destoryStaging();
     void destroy();

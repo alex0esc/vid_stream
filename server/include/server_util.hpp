@@ -56,7 +56,8 @@ namespace vsa {
 
   inline const Config& getDefaultConfig() {
     static const Config config = { 
-      {"password", "pw123" } 
+      {"password", "pw123" },
+      {"port", "50000"} 
     }; 
     return config;
   }
@@ -77,21 +78,21 @@ namespace vsa {
     std::fstream cfg_stream = std::fstream(g_config_path, std::ios::in);
     int line_index = 0;
     while(std::getline(cfg_stream, cfg_line, '\n')) {
-      int lineindex = 0;
+      line_index++;
+      int char_index = 0;
       for(char character : cfg_line) {
         if(std::isspace(character))
           continue;
-        cfg_line[lineindex] = character;
-        lineindex++;
+        cfg_line[char_index] = character;
+        char_index++;
       }
-      cfg_line.resize(lineindex);
+      cfg_line.resize(char_index);
       int split_pos = cfg_line.find(':');
       if(split_pos == std::string::npos) {
         LOG_ERROR("Could not load a line " << line_index << " from the config file.");
         continue;
       }
       config.insert_or_assign(cfg_line.substr(0, split_pos), cfg_line.substr(split_pos + 1)); 
-      line_index++;
     }
     cfg_stream.close();
     return true;
