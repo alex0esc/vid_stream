@@ -9,4 +9,4 @@ run_build.sh
 run_build_release.sh
 uploaded_files/*
 downloads/*
-compile_commands.json
+compile_commands
