@@ -19,12 +19,12 @@ option(LOG_INFO "Enable logging info" ON)
 option(LOG_TRACE "Enable logging traces" ON)
 
 #compilation
-file(GLOB CPPS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
-file(GLOB HPPS "${CMAKE_CURRENT_SOURCE_DIR}/include/*.hpp")
+file(GLOB CPPS "${CMAKE_CURRENT_LIST_DIR}/src/*.cpp")
+file(GLOB HPPS "${CMAKE_CURRENT_LIST_DIR}/include/*.hpp")
 add_library(${PROJECT_NAME} STATIC ${CPPS} ${HPPS})
 
 #include
-target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include)
 
 #definitions
 target_compile_definitions(${PROJECT_NAME} PUBLIC

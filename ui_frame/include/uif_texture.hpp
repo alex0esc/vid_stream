@@ -4,7 +4,7 @@
 
 namespace uif {
   
-  class TextureData {
+  class VulkanTexture {
     VulkanContext* m_context = nullptr;
     
     vk::DescriptorSet m_descriptor_set = nullptr;
@@ -18,9 +18,9 @@ namespace uif {
     vk::DeviceSize m_image_size = -1;
     
   
-    TextureData() = default;
-    TextureData(const TextureData& other) = delete;  
-    TextureData& operator=(const TextureData& other) = delete;    
+    VulkanTexture() = default;
+    VulkanTexture(const VulkanTexture& other) = delete;  
+    VulkanTexture& operator=(const VulkanTexture& other) = delete;    
 
   
     void initVk(VulkanContext* context) { m_context = context; }

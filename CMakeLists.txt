@@ -18,8 +18,8 @@ add_custom_target(copy_compile_commands ALL
 
 
 #create necessary directories
-file(MAKE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/assets)
-file(MAKE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/config)
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/assets)
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/config)
 
 #necessary compile definitions
 add_compile_definitions(ASIO_STANDALONE)
@@ -41,10 +41,10 @@ endif()
 
 #build flags
 if(MSVC)
-    set(CMAKE_C_FLAGS_DEBUG   "${CMAKE_C_FLAGS_DEBUG} /MTd /Zi /Od /W4 /WX")
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd /Zi /Od /W4 /WX")
-    set(CMAKE_C_FLAGS_RELEASE   "${CMAKE_C_FLAGS_RELEASE} /MT /O2 /GL /DNDEBUG")
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT /O2 /GL /DNDEBUG")
+    set(CMAKE_C_FLAGS_DEBUG   "${CMAKE_C_FLAGS_DEBUG} /Zi /Od /W4 /WX")
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Zi /Od /W4 /WX")
+    set(CMAKE_C_FLAGS_RELEASE   "${CMAKE_C_FLAGS_RELEASE} /O2 /GL /DNDEBUG")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2 /GL /DNDEBUG")
 endif()
 
 
@@ -56,10 +56,10 @@ if((CMAKE_CXX_COMPILER_ID STREQUAL "Clang") OR (CMAKE_CXX_COMPILER_ID STREQUAL "
 endif()
 
 #submodules
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/logger)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/packet_manager)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/ui_frame)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/client)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/server)
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/logger)
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/packet_manager)
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/ui_frame)
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/client)
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/server)
 
 

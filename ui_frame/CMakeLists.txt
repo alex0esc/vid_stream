@@ -11,9 +11,10 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
 #source files
-file(GLOB SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
-file(GLOB IMGUI_CPPS "${CMAKE_CURRENT_SOURCE_DIR}/imgui/*.cpp")
-list(APPEND SOURCES ${IMGUI_CPPS})
+file(GLOB HPPS "${CMAKE_CURRENT_LIST_DIR}/include/*.hpp")
+file(GLOB CPPS "${CMAKE_CURRENT_LIST_DIR}/src/*.cpp")
+file(GLOB IMGUI_CPPS "${CMAKE_CURRENT_LIST_DIR}/imgui/*.cpp")
+list(APPEND CPPS ${IMGUI_CPPS})
 
 #glfw
 set(GLFW_DIR ${CMAKE_CURRENT_SOURCE_DIR}/imgui/glfw-3.4) # Set this to point to an up-to-date GLFW repo
@@ -25,17 +26,16 @@ option(GLFW_DOCUMENT_INTERNALS "Include internals in documentation" OFF)
 add_subdirectory(${GLFW_DIR} binary_dir EXCLUDE_FROM_ALL)
 
 #compiltaion
-add_library(${PROJECT_NAME} STATIC ${SOURCES})
+add_library(${PROJECT_NAME} STATIC ${CPPS} ${HPPS})
 
 #include directories and libraries
-target_link_libraries(${PROJECT_NAME} PRIVATE logger)
 if(WIN32)
-target_link_libraries(${PROJECT_NAME} PRIVATE winmm)
+  target_link_libraries(${PROJECT_NAME} PRIVATE winmm)
 endif()
 find_package(Vulkan REQUIRED)
-#find_library(VULKAN_LIBRARY
-#NAMES vulkan vulkan-1)
-#set(LIBRARIES "glfw;${VULKAN_LIBRARY}")
 set(VULKAN_LIBRARIES "glfw;Vulkan::Vulkan")
 target_link_libraries(${PROJECT_NAME} PUBLIC ${VULKAN_LIBRARIES})
-target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/imgui PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_link_libraries(${PROJECT_NAME} PRIVATE logger)
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include)
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_LIST_DIR}/imgui)
+

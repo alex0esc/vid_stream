@@ -82,7 +82,8 @@ namespace vsa {
   }   
 
   void Client::update() {
-    m_capturer.captureFrame();
+    if(!m_capturer.captureFrame())
+      LOG_WARN("Failed to capture frame!");
   }
   
   

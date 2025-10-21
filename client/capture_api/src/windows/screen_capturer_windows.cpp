@@ -1,4 +1,4 @@
-#include "screen_capturer_windows.hpp"
+#include "windows/screen_capturer_windows.hpp"
 #include "logger.hpp"
 #include <d3d11.h>
 #include <dxgi.h>
@@ -41,6 +41,7 @@ namespace vsa {
     }
   }
 
+  
   bool CapturerWindows::captureFrame() {
     m_duplication->ReleaseFrame();
     DXGI_OUTDUPL_FRAME_INFO frame_info = {};
@@ -60,6 +61,11 @@ namespace vsa {
     return true;
   }
 
+
+  uint8_t* CapturerWindows::getFrame() {
+    return nullptr;
+  }
+  /*
   bool CapturerWindows::getVulkanFrame(uif::TextureData& texture) {
     D3D11_TEXTURE2D_DESC desc = {};
     desc.Width = m_texture_width;
@@ -98,6 +104,7 @@ namespace vsa {
      
     return true;
   }
+  */
 
   void CapturerWindows::destory() {
     m_texture_width = 0;

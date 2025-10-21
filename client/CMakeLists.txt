@@ -9,21 +9,24 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 #output directories
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-#source files
-file(GLOB SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
+#subdirectories
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/capture_api)
 
 #compiltaion
-add_executable(${PROJECT_NAME} ${SOURCES})
+file(GLOB HPPS "${CMAKE_CURRENT_LIST_DIR}/include/*.hpp")
+file(GLOB CPPS "${CMAKE_CURRENT_LIST_DIR}/src/*.cpp")
+add_executable(${PROJECT_NAME} ${CPPS} ${HPPS})
 
 #compile as GUI app on windows
 if (WIN32)
     set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE YES)
-    target_link_libraries(${PROJECT_NAME} PRIVATE d3d11 dxgi)
 endif()
 
 #include directories and libraries
-target_link_libraries(${PROJECT_NAME} PRIVATE logger)
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/include)
 target_link_libraries(${PROJECT_NAME} PRIVATE ui_frame)
 target_link_libraries(${PROJECT_NAME} PRIVATE packet_manager)
-target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_link_libraries(${PROJECT_NAME} PRIVATE capture_api)
+target_link_libraries(${PROJECT_NAME} PRIVATE logger)
+
 

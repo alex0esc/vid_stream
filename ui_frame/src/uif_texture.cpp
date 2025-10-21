@@ -7,7 +7,7 @@
 
 namespace uif {
   
-  void TextureData::allocate(uint32_t width, uint32_t height) {
+  void VulkanTexture::allocate(uint32_t width, uint32_t height) {
     m_width = width;
     m_height = height;    
     m_image_size = width * height * 4;
@@ -74,7 +74,7 @@ namespace uif {
     LOG_TRACE("Texture initialized.");    
   }  
   
-  void TextureData::destroy() {
+  void VulkanTexture::destroy() {
     m_context->m_device.waitIdle(m_context->m_dldi);
     ImGui_ImplVulkan_RemoveTexture(m_descriptor_set);
     m_context->m_device.destroySampler(m_sampler);

@@ -32,7 +32,7 @@ namespace vsa {
   public:
     void init() override;
     bool captureFrame() override;
-    bool getVulkanFrame(uif::TextureData& texture) override;
+    uint8_t* getFrame() override;
     void destory() override;
   };
 }
