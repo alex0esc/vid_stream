@@ -3,9 +3,6 @@
 #include <d3d11.h>
 #include <dxgi.h>
 #include <dxgiformat.h>
-#include <vulkan/vulkan_core.h>
-#include <vulkan/vulkan_enums.hpp>
-#include <vulkan/vulkan_structs.hpp>
 #include <winerror.h>
 
 
