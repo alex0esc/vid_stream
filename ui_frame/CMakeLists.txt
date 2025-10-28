@@ -31,6 +31,7 @@ add_library(${PROJECT_NAME} STATIC ${CPPS} ${HPPS})
 #include directories and libraries
 if(WIN32)
   target_link_libraries(${PROJECT_NAME} PRIVATE winmm)
+  target_compile_definitions(${PROJECT_NAME} PRIVATE BUILD_WINDOWS)
 endif()
 find_package(Vulkan REQUIRED)
 set(VULKAN_LIBRARIES "glfw;Vulkan::Vulkan")

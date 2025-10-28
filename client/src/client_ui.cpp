@@ -1,4 +1,5 @@
 #include "client.hpp"
+#include "imgui.h"
 
 
 namespace vsa {
@@ -197,5 +198,8 @@ namespace vsa {
     chatWindowSetup();    
     logWindowSetup();
     fileWindowSetup();
+    ImGui::Begin("Image Test");
+    ImGui::Image((ImTextureID) m_texture.getDescriptor(), ImGui::GetContentRegionAvail());
+    ImGui::End();
   }
 }

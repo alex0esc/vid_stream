@@ -71,7 +71,7 @@ namespace vsa {
     return 0;
   }
 
-  inline void ImguiInputTextCustom(const std::string_view& label, std::string& string, int max_length) {
+  inline void ImguiInputTextCustom(const std::string_view& label, std::string& string, size_t max_length) {
     if(string.capacity() < max_length)
       string.reserve(max_length);
     if(ImGui::InputText(label.data(), string.data(), string.capacity() + 1, 
@@ -115,7 +115,7 @@ namespace vsa {
         char_index++;
       }
       cfg_line.resize(char_index);
-      int split_pos = cfg_line.find(':');
+      size_t split_pos = cfg_line.find(':');
       if(split_pos == std::string::npos) {
         LOG_ERROR("Could not load a line " << line_index << " from the config file.");
         continue;

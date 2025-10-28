@@ -3,6 +3,7 @@
 #include "logger.hpp"
 #include "client_util.hpp"
 #include "string_stream.hpp"
+#include <cstdint>
 
 namespace vsa {
   
@@ -78,12 +79,22 @@ namespace vsa {
       m_asio_context.run();
     });
 
-    m_capturer.init();
+
+    m_texture.initVk(&m_vk_context);
+    m_texture.allocate(200, 200);
+    m_texture.allocateStaging();
+    m_texture.map();
+    *reinterpret_cast<uint32_t*>(m_texture.m_mapped_memory) = 0xff0000ff;
+    m_vk_context.m_buffer_function = [this](vk::CommandBuffer buffer) {
+      m_texture.uploadStaging(buffer);  
+    };
+    //m_capturer.init(0);
   }   
 
   void Client::update() {
-    if(!m_capturer.captureFrame())
-      LOG_WARN("Failed to capture frame!");
+    //if(!m_capturer.captureFrame())
+      //LOG_WARN("Failed to capture frame!");
+    
   }
   
   
@@ -92,8 +103,10 @@ namespace vsa {
     m_work_guard.reset();
     m_asio_context.stop();
     m_asio_thread.join();
+    m_texture.destroyStaging();
+    m_texture.destroy();
+    uif::AppBase::destroy();
     saveConfig(m_config);
     LOG_INFO("Client config saved.");
-    uif::AppBase::destroy();
   }
 }

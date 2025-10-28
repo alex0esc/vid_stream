@@ -31,7 +31,7 @@ namespace uif {
     vk::MemoryAllocateInfo alloc_info2(
       mem_requirements2.size, 
       findMemoryType(m_context->m_device_physical, mem_requirements2.memoryTypeBits, 
-        vk::MemoryPropertyFlagBits::eHostCoherent | vk::MemoryPropertyFlagBits::eHostCoherent, m_context->m_dldi)); 
+        vk::MemoryPropertyFlagBits::eHostCoherent, m_context->m_dldi)); 
     m_staging_memory = m_context->m_device.allocateMemory(alloc_info2, nullptr, m_context->m_dldi);
     m_context->m_device.bindBufferMemory(m_staging_buffer, m_staging_memory, 0, m_context->m_dldi);        
     m_staging = true;
@@ -80,12 +80,14 @@ namespace uif {
       m_context->m_device.unmapMemory(m_staging_memory, m_context->m_dldi);
     else
       m_context->m_device.unmapMemory(m_memory, m_context->m_dldi);
+    m_mapped_memory = nullptr;
   }
   
   
   void VulkanMemory::destoryStaging() {
     m_context->m_device.freeMemory(m_staging_memory);
     m_context->m_device.destroyBuffer(m_staging_buffer);
+    m_staging = false;
   }    
 
   void VulkanMemory::destroy() {

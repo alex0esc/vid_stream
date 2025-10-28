@@ -9,25 +9,37 @@
 namespace uif {
   
   inline void checkVkResult(VkResult err) {
-    if (err == 0)
+    if (err == VK_SUCCESS)
         return;
+    if(err == VK_SUBOPTIMAL_KHR || err == VK_ERROR_OUT_OF_DATE_KHR) {
+      LOG_WARN("VkResult is suboptimal: " << err);
+      return;
+    }
     LOG_ERROR("VkResult caused an error: " << err);
-    std::terminate();
+    std::abort();
   }
 
   inline void checkVkResult(vk::Result err) {
     if (err == vk::Result::eSuccess)
         return;
+    if(err == vk::Result::eSuboptimalKHR || err == vk::Result::eErrorOutOfDateKHR) {
+      LOG_WARN("VkResult is suboptimal: " << err);
+      return;
+    }
     LOG_ERROR("VkResult caused an error: " << err);
-    std::terminate();
+    std::abort();
   }
 
   template<typename T>
   inline T checkVkResult(vk::ResultValue<T> err) {
     if (err.result == vk::Result::eSuccess)
         return err.value;
-    LOG_ERROR("VkResult caused an error: " << err.result);
-    std::terminate();
+    if (err.result == vk::Result::eSuboptimalKHR || err.result == vk::Result::eErrorOutOfDateKHR) {
+        LOG_WARN("VkResult is suboptimal thus return value could be bad: " << err);
+        return err.value;
+    }
+    LOG_ERROR("VkResult caused an error no value returned: " << err.result);
+    std::abort();
   
   }
   

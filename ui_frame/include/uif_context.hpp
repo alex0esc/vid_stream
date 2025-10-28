@@ -1,6 +1,7 @@
 #pragma once
 #include "imgui_impl_vulkan.h"
 #include "uif_window.hpp"
+#include <functional>
 #include <vulkan/vulkan.hpp>
 
 #ifndef NDEBUG
@@ -11,6 +12,7 @@
 namespace uif {
    
   class VulkanContext {
+    using CommandBufferFunction = std::function<void(vk::CommandBuffer)>;
     static constexpr int c_min_image_count = 2;
     static constexpr vk::ClearValue c_background_color = { vk::ClearColorValue(0.15f, 0.15f, 0.15f, 1.0f) };
     
@@ -50,11 +52,14 @@ namespace uif {
     ImGui_ImplVulkanH_Window m_window_data;
     
     bool m_swapchain_rebuild = false;    
+
+    CommandBufferFunction m_buffer_function = nullptr;
+    CommandBufferFunction m_renderpass_function = nullptr;
         
     VulkanContext() = default;
     VulkanContext(const VulkanContext& other) = delete;  
     VulkanContext& operator=(const VulkanContext& other) = delete;    
-
+    
     
     void init(Window* window); 
     bool newFrame();

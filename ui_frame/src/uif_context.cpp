@@ -287,6 +287,10 @@ namespace uif {
     //begin command buffer
     vk::CommandBufferBeginInfo begin_info(vk::CommandBufferUsageFlagBits::eOneTimeSubmit);
     cmd_buffer.begin(begin_info, m_dldi);
+
+    //custom buffer function
+    if(m_buffer_function != nullptr)
+      m_buffer_function(cmd_buffer);
     
     //begin render pass
     vk::RenderPassBeginInfo render_begin_info(
@@ -296,6 +300,10 @@ namespace uif {
       1, &c_background_color);
     cmd_buffer.beginRenderPass(render_begin_info, vk::SubpassContents::eInline, m_dldi);
     
+    //custom render pass function
+    if(m_renderpass_function != nullptr)
+      m_renderpass_function(cmd_buffer);
+
     // Record dear imgui primitives into command buffer
     ImGui_ImplVulkan_RenderDrawData(draw_data, frame_data.CommandBuffer);
     

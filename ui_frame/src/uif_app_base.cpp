@@ -1,7 +1,7 @@
 #include "uif_app_base.hpp"
 #include "uif_util.hpp"
 #include <chrono>
-#ifdef _WIN32
+#if defined(BUILD_WINDOWS)
 #include <windows.h>
 #include <timeapi.h>
 #undef MemoryBarrier
