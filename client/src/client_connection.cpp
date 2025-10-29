@@ -144,7 +144,6 @@ namespace vsa {
     });
   }
    
-
   void Client::disconnect() {
     if(!isConnected()) 
       return;

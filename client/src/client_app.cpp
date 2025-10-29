@@ -3,7 +3,8 @@
 #include "logger.hpp"
 #include "client_util.hpp"
 #include "string_stream.hpp"
-#include <cstdint>
+#include "uif_texture.hpp"
+#include "vulkan/vulkan.hpp"
 
 namespace vsa {
   
@@ -44,22 +45,11 @@ namespace vsa {
     static slog::StringStream s_log_stream = slog::StringStream(m_log);
     slog::g_logger.setOutputStream(&s_log_stream);
     slog::g_logger.addOutputFile(fs::path("config") / "client_log.txt");
-    
-    createDownloadDirectory(); 
-    
+  
     AppBase::init();    
     m_window.setTitle("Vid Stream");      
     m_window.setDropCallback(std::bind(&Client::onDragDrop, this, std::placeholders::_1, std::placeholders::_2));
-
-    m_chat.reserve(10240);
-    m_log.reserve(10240);
-
-    m_chat_packet = std::make_shared<Packet>(PacketType::MessageChat);
-    m_chat_packet->setReservedSize(c_max_chat_length);
-    m_file_packet = std::make_shared<Packet>(PacketType::FileDataChunk);
-    m_file_packet->setReservedSize(64000);
-    
-    
+        
     ImGuiIO& io = ImGui::GetIO();
     io.Fonts->AddFontFromFileTTF("assets/Cousine-Regular.ttf", 18.0);
     static const ImWchar icons_ranges[] = {0xf000, 0xf3ff, 0};
@@ -70,36 +60,50 @@ namespace vsa {
     io.Fonts->Build();
     LOG_INFO("Fonts loaded.");
 
-    
+    createDownloadDirectory();
     if(!loadConfig(m_config))
       saveConfig(m_config);
     LOG_INFO("Client config loaded.");
+
+    m_chat.reserve(10240);
+    m_log.reserve(10240);
+    m_chat_packet = std::make_shared<Packet>(PacketType::MessageChat);
+    m_chat_packet->setReservedSize(c_max_chat_length);
+    m_file_packet = std::make_shared<Packet>(PacketType::FileDataChunk);
+    m_file_packet->setReservedSize(64000);
     
     m_asio_thread = std::thread([this]() {
       m_asio_context.run();
     });
 
+    std::vector<DisplayInfo> displays = m_capturer.listDisplays();
+    m_capturer.init(displays[0]);
 
-    m_texture.initVk(&m_vk_context);
-    m_texture.allocate(200, 200);
+    uif::TextureConfig config = {m_capturer.m_display_info.m_width, m_capturer.m_display_info.m_height};
+    config.m_component_mapping.setR(vk::ComponentSwizzle::eB);
+    config.m_component_mapping.setB(vk::ComponentSwizzle::eR);
+    config.m_component_mapping.setA(vk::ComponentSwizzle::eOne);
+    m_texture.init(config, &m_vk_context);
+    m_texture.allocate();
     m_texture.allocateStaging();
     m_texture.map();
-    *reinterpret_cast<uint32_t*>(m_texture.m_mapped_memory) = 0xff0000ff;
+    
     m_vk_context.m_buffer_function = [this](vk::CommandBuffer buffer) {
       m_texture.uploadStaging(buffer);  
     };
-    //m_capturer.init(0);
   }   
 
   void Client::update() {
-    //if(!m_capturer.captureFrame())
-      //LOG_WARN("Failed to capture frame!");
+    if(!m_capturer.captureFrame())
+      LOG_WARN("Failed to capture frame!");
+    m_capturer.copyFrame(m_texture.m_mapped_memory);
     
   }
   
   
   void Client::destroy() {
     disconnect();
+    m_capturer.destory();
     m_work_guard.reset();
     m_asio_context.stop();
     m_asio_thread.join();

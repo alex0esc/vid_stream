@@ -2,8 +2,15 @@
 #include <vulkan/vulkan.hpp>
 
 namespace uif {
+
+  struct MemoryConfig {
+    vk::DeviceSize m_size = 0; 
+    vk::MemoryPropertyFlags m_properties; 
+    vk::BufferUsageFlags m_usage;
+  };
   
   class VulkanMemory {
+    MemoryConfig m_config;
     VulkanContext* m_context = nullptr;
     
     bool m_staging = false;
@@ -11,7 +18,6 @@ namespace uif {
     vk::DeviceMemory m_staging_memory = nullptr;
     
   public:
-    vk::DeviceSize m_size = -1;
     vk::Buffer m_buffer = nullptr;
     vk::DeviceMemory m_memory = nullptr;
     void* m_mapped_memory = nullptr;
@@ -20,14 +26,8 @@ namespace uif {
     VulkanMemory(const VulkanMemory& other) = delete;  
     VulkanMemory& operator=(const VulkanMemory& other) = delete;    
 
-    void initVk(VulkanContext* context) {
-      m_context = context;
-    } 
-    void allocate(
-      vk::DeviceSize size, 
-      vk::MemoryPropertyFlagBits properties, 
-      vk::Flags<vk::BufferUsageFlagBits> usage
-    );
+    void init(MemoryConfig& config, VulkanContext* context);
+    void allocate();
     void allocateStaging();
     void uploadStaging(vk::CommandBuffer cmd_buffer);
     void uploadStaging(vk::CommandPool cmd_pool, vk::Queue queue);

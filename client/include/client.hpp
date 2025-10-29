@@ -5,7 +5,7 @@
 #include "client_util.hpp"
 #include <fstream>
 #include <thread>
-//#include "screen_capturer_platform.hpp"
+#include "screen_capturer_platform.hpp"
 #include "uif_texture.hpp"
 
 using asio::ip::tcp;
@@ -15,8 +15,6 @@ namespace vsa {
 
   class Client : public uif::AppBase {
     static constexpr size_t c_max_chat_length = 1024;
-
-    uif::VulkanTexture m_texture;
 
     std::string m_log = std::string();
     Config m_config = getDefaultConfig();
@@ -49,7 +47,8 @@ namespace vsa {
     };
     std::vector<ListFile> m_file_list;
 
-    //CapturerPlatform m_capturer;
+    CapturerPlatform m_capturer;
+    uif::VulkanTexture m_texture;
     
     void dockingSpaceSetup();
     void generalWindowSetup();

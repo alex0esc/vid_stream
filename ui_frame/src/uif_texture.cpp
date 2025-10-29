@@ -1,23 +1,26 @@
 #include "uif_texture.hpp"
 #include "imgui_impl_vulkan.h"
 #include "logger.hpp"
+#include "uif_context.hpp"
 #include "uif_util.hpp"
 #include "vulkan/vulkan.hpp"
-#include <cstdint>
 
 
 namespace uif {
+
+  void VulkanTexture::init(TextureConfig& config, VulkanContext* context) {
+    m_config = config;
+    m_image_size = config.m_width * config.m_height * 4;
+    m_context = context;
+  }
+
   
-  void VulkanTexture::allocate(uint32_t width, uint32_t height) {
-    m_width = width;
-    m_height = height;    
-    m_image_size = width * height * 4;
-    
+  void VulkanTexture::allocate() {    
     vk::ImageCreateInfo image_info(
       vk::ImageCreateFlags(),
       vk::ImageType::e2D, 
       vk::Format::eR8G8B8A8Unorm, 
-      vk::Extent3D(width, height, 1), 
+      vk::Extent3D(m_config.m_width, m_config.m_height, 1), 
       1, 1, 
       vk::SampleCountFlagBits::e1, 
       vk::ImageTiling::eOptimal,
@@ -36,12 +39,6 @@ namespace uif {
     m_image_memory = m_context->m_device.allocateMemory(alloc_info, nullptr, m_context->m_dldi);
     m_context->m_device.bindImageMemory(m_image, m_image_memory, 0);
     
-    
-    vk::ComponentMapping component_mapping(
-      vk::ComponentSwizzle::eR, 
-      vk::ComponentSwizzle::eG,
-      vk::ComponentSwizzle::eB,
-      vk::ComponentSwizzle::eA);
     vk::ImageSubresourceRange resource_range(
       vk::ImageAspectFlagBits::eColor,
       0, 1, 0, 1);
@@ -50,14 +47,14 @@ namespace uif {
       m_image, 
       vk::ImageViewType::e2D, 
       vk::Format::eR8G8B8A8Unorm, 
-      component_mapping, 
+      m_config.m_component_mapping, 
       resource_range);
     m_image_view = m_context->m_device.createImageView(image_view_info, nullptr, m_context->m_dldi);
-
+    
     vk::SamplerCreateInfo sampler_info(
       vk::SamplerCreateFlags(),
-      vk::Filter::eNearest,
-      vk::Filter::eNearest,
+      m_config.m_upscale_filter,
+      m_config.m_upscale_filter,
       vk::SamplerMipmapMode::eNearest,
       vk::SamplerAddressMode::eClampToEdge,
       vk::SamplerAddressMode::eClampToEdge,
@@ -170,7 +167,7 @@ namespace uif {
       0, 0, 0,
       sub_layers,
       vk::Offset3D(),
-      vk::Extent3D(m_width, m_height, 1));
+      vk::Extent3D(m_config.m_width, m_config.m_height, 1));
 
     cmd_buffer.copyBufferToImage(
       m_staging_buffer, 
@@ -198,13 +195,20 @@ namespace uif {
       m_context->m_dldi);    
   }
 
-  
 
   void VulkanTexture::map() {
     if(m_staging)
-      m_mapped_memory = m_context->m_device.mapMemory(m_staging_memory, 0, m_image_size, vk::MemoryMapFlags(), m_context->m_dldi);
+      m_mapped_memory = m_context->m_device.mapMemory(
+        m_staging_memory, 0,
+        m_image_size,
+        vk::MemoryMapFlags(),
+        m_context->m_dldi);
     else
-      m_mapped_memory = m_context->m_device.mapMemory(m_image_memory, 0, m_image_size, vk::MemoryMapFlags(), m_context->m_dldi);
+      m_mapped_memory = m_context->m_device.mapMemory(
+        m_image_memory, 0,
+        m_image_size,
+        vk::MemoryMapFlags(),
+        m_context->m_dldi);
   }
   
   void VulkanTexture::unmap() {
@@ -214,7 +218,6 @@ namespace uif {
       m_context->m_device.unmapMemory(m_image_memory, m_context->m_dldi);
     m_mapped_memory = nullptr;
   }
-
 
 
   void VulkanTexture::destroyStaging() {

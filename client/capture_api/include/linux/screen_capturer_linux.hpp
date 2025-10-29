@@ -10,17 +10,19 @@
 namespace vsa {
 
   class CapturerLinux : public Capturer {
-    Display* m_display;
-    Window m_root_window;
-    XImage m_image;
-    XShmSegmentInfo m_segment;
-
+    Display* m_display = nullptr;
+    Window m_root_window = {};
+    XRRScreenResources* m_screen_resources = nullptr;
+    int m_screen = -1;
+    XShmSegmentInfo m_segment_info = {};
+    XImage* m_image = nullptr;
+    
             
   public:
-    int getDisplayCount() override;
-    void init(int display = 0) override;
+    std::vector<DisplayInfo> listDisplays() override;
+    void init(DisplayInfo& display_info) override;
     bool captureFrame() override;
-    uint8_t* getFrame() override;
+    void copyFrame(void* dst_memory) override;
     void destory() override;
 
   };

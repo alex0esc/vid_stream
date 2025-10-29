@@ -1,10 +1,23 @@
 #pragma once
 #include "uif_context.hpp"
+#include "vulkan/vulkan.hpp"
 #include <vulkan/vulkan.hpp>
 
 namespace uif {
+
+  struct TextureConfig {
+    int m_width = 0;
+    int m_height = 0;
+    vk::ComponentMapping m_component_mapping = {
+      vk::ComponentSwizzle::eR,
+      vk::ComponentSwizzle::eG,
+      vk::ComponentSwizzle::eB,
+      vk::ComponentSwizzle::eA };
+    vk::Filter m_upscale_filter = vk::Filter::eLinear;      
+  };
   
   class VulkanTexture {
+    TextureConfig m_config;
     VulkanContext* m_context = nullptr;
 
     bool m_staging = false;
@@ -18,8 +31,6 @@ namespace uif {
     vk::DeviceMemory m_image_memory = nullptr;
     vk::Sampler m_sampler = nullptr;
 
-    uint32_t m_width = -1;
-    uint32_t m_height = -1;
     vk::DeviceSize m_image_size = -1;
     void* m_mapped_memory = nullptr;
     
@@ -29,8 +40,8 @@ namespace uif {
     VulkanTexture& operator=(const VulkanTexture& other) = delete;    
 
   
-    void initVk(VulkanContext* context) { m_context = context; }
-    void allocate(uint32_t width, uint32_t height);
+    void init(TextureConfig& config, VulkanContext* context);
+    void allocate();
     void allocateStaging();
     void uploadStaging(vk::CommandBuffer cmd_buffer);
     VkDescriptorSet getDescriptor() { return m_descriptor_set; }
@@ -38,7 +49,6 @@ namespace uif {
     void unmap();
     void destroyStaging();
     void destroy();
-  
   };   
   
 }
