@@ -52,9 +52,9 @@ namespace uif {
   }
 
 
-  void VulkanMemory::uploadStaging(vk::CommandPool cmd_pool, vk::Queue queue) {            
+  void VulkanMemory::uploadStagingOnce() {            
     vk::CommandBufferAllocateInfo alc_info(
-      cmd_pool, 
+      m_context->m_command_pool, 
       vk::CommandBufferLevel::ePrimary, 
       1);
     vk::CommandBuffer cmd_buffer;
@@ -67,9 +67,9 @@ namespace uif {
     cmd_buffer.end(m_context->m_dldi);
 
     vk::SubmitInfo submit_info(0, nullptr, nullptr, 1, &cmd_buffer);
-    queue.submit(submit_info);
-    queue.waitIdle(m_context->m_dldi);
-    m_context->m_device.freeCommandBuffers(cmd_pool, 1 , &cmd_buffer, m_context->m_dldi);
+    m_context->m_graphics_queue.submit(submit_info);
+    m_context->m_graphics_queue.waitIdle(m_context->m_dldi);
+    m_context->m_device.freeCommandBuffers(m_context->m_command_pool, 1 , &cmd_buffer, m_context->m_dldi);
   }
   
   

@@ -70,6 +70,7 @@ namespace vsa {
     void connect();
     void disconnect();    
     void updateReadRate();
+    void updateWriteRate();
 
   public:
     void init() override;    

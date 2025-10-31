@@ -93,7 +93,7 @@ namespace uif {
 
 
     vk::CommandBufferAllocateInfo alc_info(
-      m_context->m_window_data.Frames[0].CommandPool, 
+      m_context->m_command_pool, 
       vk::CommandBufferLevel::ePrimary, 
       1);
     vk::CommandBuffer cmd_buffer;
@@ -130,7 +130,7 @@ namespace uif {
     vk::SubmitInfo submit_info(0, nullptr, nullptr, 1, &cmd_buffer);
     m_context->m_graphics_queue.submit(submit_info);
     m_context->m_graphics_queue.waitIdle(m_context->m_dldi);
-    m_context->m_device.freeCommandBuffers(m_context->m_window_data.Frames[0].CommandPool, 1 , &cmd_buffer, m_context->m_dldi);  \
+    m_context->m_device.freeCommandBuffers(m_context->m_command_pool, 1 , &cmd_buffer, m_context->m_dldi);  \
     LOG_TRACE("Image Buffer layout transformed for staging upload.");
   }
 
@@ -193,6 +193,27 @@ namespace uif {
       0, nullptr,
       1, &image_barrier1,
       m_context->m_dldi);    
+  }
+
+
+  void VulkanTexture::uploadStagingOnce() {            
+    vk::CommandBufferAllocateInfo alc_info(
+      m_context->m_command_pool, 
+      vk::CommandBufferLevel::ePrimary, 
+      1);
+    vk::CommandBuffer cmd_buffer;
+    checkVkResult(m_context->m_device.allocateCommandBuffers(&alc_info, &cmd_buffer));
+    vk::CommandBufferBeginInfo begin_info(vk::CommandBufferUsageFlagBits::eOneTimeSubmit);
+    cmd_buffer.begin(begin_info, m_context->m_dldi);
+
+    uploadStaging(cmd_buffer);
+
+    cmd_buffer.end(m_context->m_dldi);
+
+    vk::SubmitInfo submit_info(0, nullptr, nullptr, 1, &cmd_buffer);
+    m_context->m_graphics_queue.submit(submit_info);
+    m_context->m_graphics_queue.waitIdle(m_context->m_dldi);
+    m_context->m_device.freeCommandBuffers(m_context->m_command_pool, 1 , &cmd_buffer, m_context->m_dldi);
   }
 
 

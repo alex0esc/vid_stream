@@ -47,6 +47,7 @@ namespace vsa {
     ImguiInputTextCustom("Port", m_config["port"], 20);
     ImguiInputTextCustom("Username", m_config["username"], 50);
     ImguiInputTextCustom("Password", m_config["password"], 30);
+
     if(ImGui::Button("Connect", ImVec2(130, 30)))
       connect();
     ImGui::SameLine();
@@ -58,7 +59,7 @@ namespace vsa {
     ImGui::Spacing();
 
     if(ImGui::SliderInt("Mebit write", &m_mebit_write, 5, 2000, "%d", ImGuiSliderFlags_Logarithmic) && isConnected()) 
-      m_packet_manager->setWriteBitRate(m_mebit_write * 1000 * 1000);  
+      updateWriteRate();  
     
     ImGui::SliderInt("MeBit read", &m_mebit_read, 5, 2000, "%d", ImGuiSliderFlags_Logarithmic); 
     if(ImGui::IsItemDeactivatedAfterEdit() && isConnected()) 

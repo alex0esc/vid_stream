@@ -30,7 +30,7 @@ namespace uif {
     void allocate();
     void allocateStaging();
     void uploadStaging(vk::CommandBuffer cmd_buffer);
-    void uploadStaging(vk::CommandPool cmd_pool, vk::Queue queue);
+    void uploadStagingOnce();
     void map();
     void unmap();
     void destoryStaging();

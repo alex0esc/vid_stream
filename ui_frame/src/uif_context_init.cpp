@@ -4,6 +4,7 @@
 #include "imgui_impl_glfw.h"
 #include "logger.hpp"
 #include "uif_util.hpp"
+#include "vulkan/vulkan.hpp"
 #include <cstdint>
 #include <vector>
 
@@ -85,6 +86,7 @@ namespace uif {
   }
 
 
+
   void VulkanContext::choseDeviceQueues() {
     std::vector properties = m_device_physical.getQueueFamilyProperties(m_dldi);
     for (size_t i = 0; i < properties.size(); i++) {
@@ -142,6 +144,8 @@ namespace uif {
     LOG_TRACE("VkDevice has been created and queue family " << m_graphics_queue_family_index << " has been selected as graphics queue.");
   }
 
+
+
   void VulkanContext::getQueues() {
     m_device.getQueue(m_graphics_queue_family_index, 0, &m_graphics_queue, m_dldi);
     if(m_has_compute_queue) {
@@ -151,6 +155,15 @@ namespace uif {
       m_compute_queue_family_index = m_graphics_queue_family_index;
     }
   }
+
+
+  void VulkanContext::createCommandPool() {
+    vk::CommandPoolCreateInfo pool_info(
+      vk::CommandPoolCreateFlagBits::eTransient,
+      m_graphics_queue_family_index);
+    m_command_pool = m_device.createCommandPool(pool_info);
+  }
+
 
   void VulkanContext::createDescriptorPool() {
     std::vector<vk::DescriptorPoolSize> sizes = {
@@ -270,6 +283,7 @@ namespace uif {
       choseDeviceQueues();
       createLogicalDevice();
       getQueues();
+      createCommandPool();
       createDescriptorPool();
       setupVulkanWindow();
       setupImGUI();

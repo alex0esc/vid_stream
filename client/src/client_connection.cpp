@@ -12,7 +12,6 @@ namespace vsa {
     m_packet_manager->setReceiveHandler(std::bind(&Client::onPacketReceive, this, std::placeholders::_1));
     m_packet_manager->setSendHandler(std::bind(&Client::onPacketSend, this, std::placeholders::_1));
     
-    //send user data
     auto user_data_packet = std::make_shared<Packet>(PacketType::UserInfo);
     user_data_packet->setReservedSize(100);
     user_data_packet->setString(m_config["password"]);
@@ -20,8 +19,9 @@ namespace vsa {
     user_data_packet->setStringOffset(m_config["username"], user_data_packet->getSize());
     m_packet_manager->queuePacket(user_data_packet);
 
-    m_packet_manager->setWriteBitRate(m_mebit_write * 1000 * 1000);
+    updateWriteRate();
     updateReadRate();
+
     LOG_INFO("Successfully connected to server.");
   }
     
@@ -157,5 +157,9 @@ namespace vsa {
     write_update_packet->setSize(sizeof(size_t));
     *static_cast<size_t*>(write_update_packet->getMemory()) = m_mebit_read * 1000 * 1000;
     m_packet_manager->queuePacket(write_update_packet);
+  }
+
+  void Client::updateWriteRate() {
+    m_packet_manager->setWriteBitRate(m_mebit_write * 1000 * 1000);
   }
 }

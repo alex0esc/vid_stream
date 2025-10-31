@@ -23,6 +23,7 @@ namespace uif {
     void choseDeviceQueues();
     void createLogicalDevice();
     void getQueues();
+    void createCommandPool();
     void createDescriptorPool();
     void setupVulkanWindow();
     void setupImGUI();
@@ -43,6 +44,9 @@ namespace uif {
     vk::PhysicalDevice m_device_physical = nullptr;
     vk::Device m_device = nullptr;
     
+    ///Created with transient bit, used for one time submits to the graphics queue.
+    vk::CommandPool m_command_pool = nullptr;
+
     int32_t m_graphics_queue_family_index = -1;
     vk::Queue m_graphics_queue = nullptr;
     bool m_has_compute_queue = false;

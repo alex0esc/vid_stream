@@ -6,6 +6,7 @@
 #include <X11/extensions/Xrandr.h>
 #include <X11/extensions/randr.h>
 #include <cstring>
+#include <stop_token>
 #include <sys/ipc.h>
 #include <sys/shm.h>
 
@@ -92,6 +93,7 @@ namespace vsa {
   void CapturerLinux::copyFrame(void* dst_memory) {
     memcpy(dst_memory, m_image->data , m_display_info.m_buffer_size);
   }
+
  
   void CapturerLinux::destory() {
     XShmDetach(m_display, &m_segment_info);

@@ -44,6 +44,7 @@ namespace uif {
     void allocate();
     void allocateStaging();
     void uploadStaging(vk::CommandBuffer cmd_buffer);
+    void uploadStagingOnce();
     VkDescriptorSet getDescriptor() { return m_descriptor_set; }
     void map();
     void unmap();

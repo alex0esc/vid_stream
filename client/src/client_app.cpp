@@ -76,8 +76,10 @@ namespace vsa {
       m_asio_context.run();
     });
 
+    
     std::vector<DisplayInfo> displays = m_capturer.listDisplays();
     m_capturer.init(displays[0]);
+    
 
     uif::TextureConfig config = {m_capturer.m_display_info.m_width, m_capturer.m_display_info.m_height};
     config.m_component_mapping.setR(vk::ComponentSwizzle::eB);
@@ -88,21 +90,28 @@ namespace vsa {
     m_texture.allocateStaging();
     m_texture.map();
     
+    //m_capturer.startAsyncCapture(m_texture.m_mapped_memory);
+
+    /*
     m_vk_context.m_buffer_function = [this](vk::CommandBuffer buffer) {
-      m_texture.uploadStaging(buffer);  
+        
     };
+  */
   }   
 
   void Client::update() {
-    if(!m_capturer.captureFrame())
-      LOG_WARN("Failed to capture frame!");
-    m_capturer.copyFrame(m_texture.m_mapped_memory);
+    
+    //if(m_capturer.m_copy_mutex.try_lock()) {
+      m_texture.uploadStagingOnce();
+      m_capturer.m_copy_mutex.unlock();
+    //}
     
   }
   
   
   void Client::destroy() {
     disconnect();
+    m_capturer.stopAsyncCapture();
     m_capturer.destory();
     m_work_guard.reset();
     m_asio_context.stop();
