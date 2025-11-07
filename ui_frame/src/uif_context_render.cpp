@@ -88,7 +88,7 @@ namespace uif {
       LOG_TRACE("Main window resized.");
     }
     if (m_window->minimized()) {
-      ImGui_ImplGlfw_Sleep(10);
+      ImGui_ImplGlfw_Sleep(50);
       return false;
     }  
         

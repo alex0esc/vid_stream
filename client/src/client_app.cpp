@@ -85,26 +85,20 @@ namespace vsa {
     config.m_component_mapping.setR(vk::ComponentSwizzle::eB);
     config.m_component_mapping.setB(vk::ComponentSwizzle::eR);
     config.m_component_mapping.setA(vk::ComponentSwizzle::eOne);
+    
     m_texture.init(config, &m_vk_context);
     m_texture.allocate();
     m_texture.allocateStaging();
     m_texture.map();
-    
-    //m_capturer.startAsyncCapture(m_texture.m_mapped_memory);
 
-    /*
+    m_capturer.startAsyncCapture(m_texture.m_mapped_memory);    
+   
     m_vk_context.m_buffer_function = [this](vk::CommandBuffer buffer) {
-        
+      m_texture.uploadStaging(buffer);  
     };
-  */
   }   
 
   void Client::update() {
-    
-    //if(m_capturer.m_copy_mutex.try_lock()) {
-      m_texture.uploadStagingOnce();
-      m_capturer.m_copy_mutex.unlock();
-    //}
     
   }
   

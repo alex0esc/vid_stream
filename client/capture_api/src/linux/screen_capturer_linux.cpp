@@ -6,7 +6,6 @@
 #include <X11/extensions/Xrandr.h>
 #include <X11/extensions/randr.h>
 #include <cstring>
-#include <stop_token>
 #include <sys/ipc.h>
 #include <sys/shm.h>
 

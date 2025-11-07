@@ -35,8 +35,8 @@ namespace vsa {
   void Client::generalWindowSetup() {
     ImGui::Begin("General");
     ImGui::Text("Frames %f", 1.0 / m_frame_time);    
-    static int m_frames = 100;
-    ImGui::SliderInt("FPS Limit", &m_frames, 30, 480);
+    static int m_frames = 60;
+    ImGui::SliderInt("FPS Limit", &m_frames, 1, 480);
     m_min_frame_time = 1.0 / m_frames;  
     
     ImGui::Spacing();

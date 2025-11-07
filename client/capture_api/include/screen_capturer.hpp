@@ -21,6 +21,7 @@ namespace vsa {
   public:
     std::mutex m_copy_mutex;
     DisplayInfo m_display_info;
+    float m_capture_fps = 60;
     
     virtual std::vector<DisplayInfo> listDisplays() = 0;
     virtual void init(DisplayInfo& display_info) = 0;
