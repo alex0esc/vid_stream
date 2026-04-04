@@ -8,6 +8,7 @@
 #include <unordered_map>
 
 namespace vsa {
+
   namespace fs = std::filesystem;
   using Config = std::unordered_map<std::string, std::string>;
   
@@ -36,16 +37,16 @@ namespace vsa {
   inline std::string getSizeText(size_t bytes) {
     std::string size_text;
     if(bytes < 1024) {
-      size_text = "\t" + std::to_string(bytes) + "b";
+      size_text = std::to_string(bytes) + "b";
     } else if(bytes < 1024 * 1024) {
       float size = static_cast<float>(bytes) / 1024;
-      size_text = "\t" + std::format("{:.2f}", size) + "kb";
+      size_text = std::format("{:.2f}", size) + "kb";
     } else if(bytes < 1024 * 1024 * 1024) {
       float size = static_cast<float>(bytes) / 1024 / 1024;
-      size_text = "\t" + std::format("{:.2f}", size) + "mb";
+      size_text = std::format("{:.2f}", size) + "mb";
     } else if(bytes < static_cast<size_t>(1024) * 1024 * 1024 * 1024) {
       float size = static_cast<float>(bytes) / 1024 / 1024 / 1024;
-      size_text = "\t" + std::format("{:.2f}", size) + "gb";
+      size_text = std::format("{:.2f}", size) + "gb";
     }
     return size_text;
   }
@@ -82,6 +83,7 @@ namespace vsa {
   
   inline const Config& getDefaultConfig() {
     static const Config config = { 
+      {"ui_size", "1.0"},
       {"address", "localhost" }, 
       {"port", "50000" },
       {"username", "none" },

@@ -48,11 +48,13 @@ namespace vsa {
     ImguiInputTextCustom("Username", m_config["username"], 50);
     ImguiInputTextCustom("Password", m_config["password"], 30);
 
-    if(ImGui::Button("Connect", ImVec2(130, 30)))
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(15, 10));
+    if(ImGui::Button("Connect"))
       connect();
     ImGui::SameLine();
-    if(ImGui::Button("Disconnect", ImVec2(130, 30)))
+    if(ImGui::Button("Disconnect"))
       disconnect();    
+    ImGui::PopStyleVar();
 
     ImGui::Spacing();
     ImGui::Separator();
@@ -73,8 +75,8 @@ namespace vsa {
     ImGui::Begin("Chat");
        
     ImVec2 child_size = isLoadingFile() ?
-      ImVec2(-FLT_MIN, ImGui::GetWindowHeight() - 100 - ImGui::GetCursorPosY()) :
-      ImVec2(-FLT_MIN, ImGui::GetWindowHeight() - 70 - ImGui::GetCursorPosY()); 
+      ImVec2(-FLT_MIN, ImGui::GetContentRegionAvail().y - 100) :
+      ImVec2(-FLT_MIN, ImGui::GetContentRegionAvail().y - 70); 
     
     ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(1.0, 1.0, 1.0, 0.1));
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(4, 4));
@@ -93,15 +95,15 @@ namespace vsa {
     if(isLoadingFile()) 
       ImGui::ProgressBar(static_cast<float>(m_file.tellg()) / m_file_size);
     
-    ImGui::SetCursorPosY(ImGui::GetWindowHeight() - 60);
     size_t packet_length = strlen(static_cast<char*>(m_chat_packet->getMemory()));
-    if(ImGui::Button("Send", ImVec2(150, 50)) && isConnected() && !m_chat_packet->isQueued() && packet_length > 0) {
+
+    if(ImGui::Button("Send", ImVec2(150, ImGui::GetContentRegionAvail().y)) && isConnected() && !m_chat_packet->isQueued() && packet_length > 0) {
       m_chat_packet->setSize(packet_length);
       m_packet_manager->queuePacket(m_chat_packet);
     }
     
     ImGui::SameLine();
-    ImGui::InputTextMultiline("##input", static_cast<char*>(m_chat_packet->getMemory()), c_max_chat_length, ImVec2(-FLT_MIN, 50));
+    ImGui::InputTextMultiline("##input", static_cast<char*>(m_chat_packet->getMemory()), c_max_chat_length, ImVec2(-FLT_MIN, ImGui::GetContentRegionAvail().y));
 
     ImGui::End();
   }
@@ -137,7 +139,7 @@ namespace vsa {
     
     ImVec2 child_size = ImGui::GetContentRegionAvail();
     if(!selected_file.empty())
-      child_size.y -= 57;
+      child_size.y -= 90;
     ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(1.0, 1.0, 1.0, 0.1));
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(4, 4));
     ImGui::BeginChild("##fileList", child_size, true);
@@ -155,18 +157,18 @@ namespace vsa {
       
       //name text
       ImGui::SameLine();
-      ImGui::SetCursorPosX(0);
+      ImGui::SetCursorPosX(4);
       
       if(ImGui::GetWindowWidth() != previos_width || list_file.m_ellipsed_name.empty()) 
         list_file.m_ellipsed_name = getTextEllipsed(list_file.m_name, ImGui::GetWindowWidth() - 130);
         
-      ImGui::TextUnformatted(list_file.m_ellipsed_name.c_str());
+      ImGui::TextWrapped("%s", list_file.m_ellipsed_name.c_str());
 
       //size text
       ImGui::SameLine();
-      ImGui::SetCursorPosX(ImGui::GetWindowWidth() - 125);
+      ImGui::SetCursorPosX(ImGui::GetWindowWidth() - ImGui::CalcTextSize(list_file.m_size.c_str()).x - 5);
       
-      ImGui::Text("%s", list_file.m_size.c_str());
+      ImGui::TextWrapped("%s", list_file.m_size.c_str());
     }
     previos_width = ImGui::GetWindowWidth();
     ImGui::EndChild();
@@ -174,16 +176,18 @@ namespace vsa {
     ImGui::PopStyleColor();
     
     if(!selected_file.empty()) {
-      ImGui::SetCursorPosY(ImGui::GetWindowHeight() - 60);
       ImGui::Text("%s", getTextEllipsed(selected_file, ImGui::GetWindowWidth() - 15).c_str());
-      if(ImGui::Button("Download", ImVec2(ImGui::GetContentRegionAvail().x / 2, 30)) && !isLoadingFile()) {
+      ImVec2 button_size = ImGui::GetContentRegionAvail();
+      button_size.x = button_size.x / 2;
+      if(ImGui::Button("Download", button_size) && !isLoadingFile()) {
         auto download_request_packet = std::make_shared<Packet>(PacketType::FileDownloadRequest);
         download_request_packet->setSize(selected_file.length());
         download_request_packet->cpyMemory(selected_file.data(), selected_file.length());
         m_packet_manager->queuePacket(download_request_packet);
       }
       ImGui::SameLine();
-      if(ImGui::Button("Delete", ImVec2(ImGui::GetContentRegionAvail().x, 30))) {
+      button_size.x = ImGui::GetContentRegionAvail().x;
+      if(ImGui::Button("Delete", button_size)) {
         auto delete_request_packet = std::make_shared<Packet>(PacketType::FileDeleteRequest);
         delete_request_packet->setSize(selected_file.length());
         delete_request_packet->cpyMemory(selected_file.data(), selected_file.length());

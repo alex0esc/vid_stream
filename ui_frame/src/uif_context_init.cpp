@@ -234,7 +234,11 @@ namespace uif {
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
+
+    #ifdef BUILD_WINDOWS
     io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
+    #endif
+
     io.IniFilename = "config/imgui.ini";
 
     ImGui::StyleColorsDark();
@@ -257,7 +261,7 @@ namespace uif {
     init_info.Allocator = nullptr;
     init_info.CheckVkResultFn = checkVkResult;
     ImGui_ImplVulkan_Init(&init_info);  
-    LOG_TRACE("ImGUI has been setup.");
+    LOG_TRACE("ImGUI version " << ImGui::GetVersion() << " has been setup.");
 
     
     ImGuiPlatformIO& platform_io = ImGui::GetPlatformIO();

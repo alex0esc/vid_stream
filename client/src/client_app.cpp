@@ -1,10 +1,11 @@
 #include "client.hpp"
+#include "imgui.h"
 #include "imgui_internal.h"
 #include "logger.hpp"
 #include "client_util.hpp"
 #include "string_stream.hpp"
 #include "uif_texture.hpp"
-#include "vulkan/vulkan.hpp"
+#include <exception>
 
 namespace vsa {
   
@@ -45,25 +46,36 @@ namespace vsa {
     static slog::StringStream s_log_stream = slog::StringStream(m_log);
     slog::g_logger.setOutputStream(&s_log_stream);
     slog::g_logger.addOutputFile(fs::path("config") / "client_log.txt");
-  
-    AppBase::init();    
-    m_window.setTitle("Vid Stream");      
-    m_window.setDropCallback(std::bind(&Client::onDragDrop, this, std::placeholders::_1, std::placeholders::_2));
-        
-    ImGuiIO& io = ImGui::GetIO();
-    io.Fonts->AddFontFromFileTTF("assets/Cousine-Regular.ttf", 18.0);
-    static const ImWchar icons_ranges[] = {0xf000, 0xf3ff, 0};
-    ImFontConfig icons_config;
-    icons_config.MergeMode = true;
-    icons_config.PixelSnapH = true;  
-    io.Fonts->AddFontFromFileTTF("assets/fa-solid-900.ttf", 17.0, &icons_config, icons_ranges);
-    io.Fonts->Build();
-    LOG_INFO("Fonts loaded.");
 
     createDownloadDirectory();
     if(!loadConfig(m_config))
       saveConfig(m_config);
-    LOG_INFO("Client config loaded.");
+    LOG_INFO("Client config loaded.");  
+
+    AppBase::init();    
+    m_window.setTitle("Vid Stream");      
+    m_window.setDropCallback(std::bind(&Client::onDragDrop, this, std::placeholders::_1, std::placeholders::_2));
+        
+    float ui_size = 0.0; 
+    try {
+       ui_size = std::stof(m_config["ui_size"]);
+    } catch (const std::exception e) {
+      Config def_config = getDefaultConfig();
+      ui_size = std::stof(def_config["ui_size"]);
+      LOG_ERROR("Invalid ui_size in " << g_config_path << ", using " << ui_size << " as default.");
+    }
+    ImGui::GetStyle().ScaleAllSizes(ui_size);
+    ImGuiIO& io = ImGui::GetIO();
+    
+
+    io.Fonts->AddFontFromFileTTF("assets/Cousine-Regular.ttf", 18.0 * ui_size);
+    static const ImWchar icons_ranges[] = {0xf000, 0xf3ff, 0};
+    ImFontConfig icons_config;
+    icons_config.MergeMode = true;
+    icons_config.PixelSnapH = true;  
+    io.Fonts->AddFontFromFileTTF("assets/fa-solid-900.ttf", 17.0 * ui_size, &icons_config, icons_ranges);
+    io.Fonts->Build();
+    LOG_INFO("Fonts loaded.");
 
     m_chat.reserve(10240);
     m_log.reserve(10240);
@@ -77,6 +89,7 @@ namespace vsa {
     });
 
     
+    /*
     std::vector<DisplayInfo> displays = m_capturer.listDisplays();
     m_capturer.init(displays[0]);
     
@@ -96,6 +109,7 @@ namespace vsa {
     m_vk_context.m_buffer_function = [this](vk::CommandBuffer buffer) {
       m_texture.uploadStaging(buffer);  
     };
+    */
   }   
 
   void Client::update() {

@@ -17,7 +17,7 @@ file(GLOB IMGUI_CPPS "${CMAKE_CURRENT_LIST_DIR}/imgui/*.cpp")
 list(APPEND CPPS ${IMGUI_CPPS})
 
 #glfw
-set(GLFW_DIR ${CMAKE_CURRENT_SOURCE_DIR}/imgui/glfw-3.4) # Set this to point to an up-to-date GLFW repo
+set(GLFW_DIR ${CMAKE_CURRENT_SOURCE_DIR}/imgui/glfw) # Set this to point to an up-to-date GLFW repo
 option(GLFW_BUILD_EXAMPLES "Build the GLFW example programs" OFF)
 option(GLFW_BUILD_TESTS "Build the GLFW test programs" OFF)
 option(GLFW_BUILD_DOCS "Build the GLFW documentation" OFF)

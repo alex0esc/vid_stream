@@ -2,10 +2,15 @@
 #include "GLFW/glfw3.h"
 #include "logger.hpp"
 #include "uif_util.hpp"
+#include <iostream>
+
+
 
 namespace uif {
   
   void glfwErrorCallback(int error, const char* description) {
+    if(error == GLFW_FEATURE_UNAVAILABLE)
+      return;
     LOG_ERROR("Glfw error " << error << ": " << description); 
   }
 
@@ -17,23 +22,29 @@ namespace uif {
   } 
 
   void Window::initGlfw() {
+    glfwInitHint(GLFW_PLATFORM, GLFW_PLATFORM_X11);
     if(!glfwInit() || !glfwVulkanSupported()) {
-      LOG_ERROR("Failed to initialize GLFW with vulkan.");
+      LOG_ERROR("Failed to initialize GLFW version " << glfwGetVersionString() << " with vulkan.");
       std::abort();
     }
     glfwSetErrorCallback(glfwErrorCallback);
+    LOG_TRACE("Glfw version " << glfwGetVersionString() << " has been initialized.");
   }
 
   
   void Window::createWindow(std::string title) {
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
     glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_FALSE);
-    glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
-    
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);    
+    glfwWindowHint(GLFW_SCALE_TO_MONITOR, GLFW_TRUE);
+
     //create window
     GLFWmonitor* monitor = glfwGetPrimaryMonitor();
     const GLFWvidmode* const vid_mode = glfwGetVideoMode(monitor);
-    m_window = glfwCreateWindow(vid_mode->width / 2, vid_mode->height / 2, title.c_str(), nullptr, nullptr);
+
+    float xscale, yscale;
+    glfwGetMonitorContentScale(monitor, &xscale, &yscale);
+    m_window = glfwCreateWindow(vid_mode->width / xscale / 2, vid_mode->height / yscale / 2, title.c_str(), nullptr, nullptr);
     
     //drop callback
     glfwSetWindowUserPointer(m_window, this);
@@ -99,7 +110,7 @@ namespace uif {
   }
 
   std::pair<int, int> Window::getFrameBufferSize() {
-    int width, height;
+    int width, height;    
     glfwGetFramebufferSize(m_window, &width, &height);
     return std::pair{width, height};
   }
