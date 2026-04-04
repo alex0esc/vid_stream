@@ -7,6 +7,7 @@
 #include "vulkan/vulkan.hpp"
 #include <cstdint>
 #include <vector>
+#include <vulkan/vulkan_core.h>
 
 
 namespace uif {
@@ -223,7 +224,8 @@ namespace uif {
       nullptr, 
       dimensions.first, 
       dimensions.second, 
-      c_min_image_count);        
+      c_min_image_count,
+      VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT);        
     LOG_TRACE("Vulkan window has been setup.");
   }  
 
@@ -245,6 +247,11 @@ namespace uif {
 
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForVulkan(m_window->getGlfwWindow(), true);
+
+    ImGui_ImplVulkan_PipelineInfo pipeline_info = {};
+    pipeline_info.RenderPass = m_window_data.RenderPass;
+    pipeline_info.Subpass = 0;
+    pipeline_info.MSAASamples = VK_SAMPLE_COUNT_1_BIT;
     ImGui_ImplVulkan_InitInfo init_info = {};
     init_info.Instance = m_instance;
     init_info.PhysicalDevice = m_device_physical;
@@ -253,13 +260,11 @@ namespace uif {
     init_info.Queue = m_graphics_queue;
     init_info.PipelineCache = VK_NULL_HANDLE;
     init_info.DescriptorPool = m_descriptor_pool;
-    init_info.RenderPass = m_window_data.RenderPass;
-    init_info.Subpass = 0;
     init_info.MinImageCount = c_min_image_count;
     init_info.ImageCount = m_window_data.ImageCount;
-    init_info.MSAASamples = VK_SAMPLE_COUNT_1_BIT;
     init_info.Allocator = nullptr;
     init_info.CheckVkResultFn = checkVkResult;
+    init_info.PipelineInfoMain = pipeline_info;
     ImGui_ImplVulkan_Init(&init_info);  
     LOG_TRACE("ImGUI version " << ImGui::GetVersion() << " has been setup.");
 

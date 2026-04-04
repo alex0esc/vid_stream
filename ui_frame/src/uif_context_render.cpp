@@ -2,6 +2,7 @@
 #include "logger.hpp"
 #include "uif_context.hpp"
 #include "uif_util.hpp"
+#include "vulkan/vulkan.hpp"
 
 namespace uif {
   
@@ -82,7 +83,19 @@ namespace uif {
     std::pair fb_size = m_window->getFrameBufferSize();
     if (fb_size.first > 0 && fb_size.second > 0 && (m_swapchain_rebuild || m_window_data.Width != fb_size.first || m_window_data.Height != fb_size.second)) {
       ImGui_ImplVulkan_SetMinImageCount(c_min_image_count);
-      ImGui_ImplVulkanH_CreateOrResizeWindow(m_instance, m_device_physical, m_device, &m_window_data, m_graphics_queue_family_index, nullptr, fb_size.first, fb_size.second, c_min_image_count);
+
+      ImGui_ImplVulkanH_CreateOrResizeWindow(
+        m_instance,
+        m_device_physical,
+        m_device,
+        &m_window_data,
+        m_graphics_queue_family_index,
+        nullptr,
+        fb_size.first,
+        fb_size.second,
+        c_min_image_count,
+        VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT);
+
       m_window_data.FrameIndex = 0;
       m_swapchain_rebuild = false;
       LOG_TRACE("Main window resized.");
