@@ -247,6 +247,7 @@ namespace uif {
 
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForVulkan(m_window->getGlfwWindow(), true);
+    
 
     ImGui_ImplVulkan_PipelineInfo pipeline_info = {};
     pipeline_info.RenderPass = m_window_data.RenderPass;
@@ -279,6 +280,8 @@ namespace uif {
       glfwSetWindowUserPointer(window, s_window);
       glfwSetDropCallback(window, s_window->glfwDropCallback);
     };
+
+    
   }
   
   void VulkanContext::init(Window* window) {
@@ -304,10 +307,12 @@ namespace uif {
   }  
 
   void VulkanContext::destroy() {
-    m_device.waitIdle();
+    LOG_TRACE("Shutting down vulkan.");
+    m_device.waitIdle(m_dldi);
     ImGui_ImplVulkan_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui_ImplVulkanH_DestroyWindow(m_instance, m_device, &m_window_data, nullptr);
+    m_device.destroyCommandPool(m_command_pool);
     m_device.destroyDescriptorPool(m_descriptor_pool);
     m_device.destroy();
     #ifdef BUILD_DEBUG

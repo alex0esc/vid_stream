@@ -3,9 +3,12 @@
 #include "imgui_internal.h"
 #include "logger.hpp"
 #include "client_util.hpp"
+#include "screen_capturer.hpp"
 #include "string_stream.hpp"
 #include "uif_texture.hpp"
+#include "vulkan/vulkan.hpp"
 #include <exception>
+#include <memory>
 
 namespace vsa {
   
@@ -89,41 +92,49 @@ namespace vsa {
     });
 
     
-    /*
-    std::vector<DisplayInfo> displays = m_capturer.listDisplays();
+    
+    auto displays = m_capturer.listDisplays();
+    for(std::unique_ptr<DisplayInfo>& display : displays) {
+      LOG_TRACE(display.get()->m_name << ": " << display.get()->m_width << "x" << display.get()->m_height);
+    }
+
+    LOG_INFO("Using display " << displays[0]->m_name << ".");
     m_capturer.init(displays[0]);
     
 
-    uif::TextureConfig config = {m_capturer.m_display_info.m_width, m_capturer.m_display_info.m_height};
+    
+    uif::TextureConfig config = {displays[0]->m_width, displays[0]->m_height};
     config.m_component_mapping.setR(vk::ComponentSwizzle::eB);
     config.m_component_mapping.setB(vk::ComponentSwizzle::eR);
     config.m_component_mapping.setA(vk::ComponentSwizzle::eOne);
     
+    
     m_texture.init(config, &m_vk_context);
     m_texture.allocate();
     m_texture.allocateStaging();
-    m_texture.map();
-
-    m_capturer.startAsyncCapture(m_texture.m_mapped_memory);    
-   
-    m_vk_context.m_buffer_function = [this](vk::CommandBuffer buffer) {
-      m_texture.uploadStaging(buffer);  
-    };
-    */
+    m_texture.map();    
   }   
 
+
   void Client::update() {
-    
+    if(m_capturer.captureFrame())    
+      m_capturer.copyFrame(m_texture.m_mapped_memory);
+  }
+
+
+  void Client::bufferFunction(vk::CommandBuffer cmd_buffer) {
+      m_texture.uploadStaging(cmd_buffer);  
   }
   
   
   void Client::destroy() {
     disconnect();
-    m_capturer.stopAsyncCapture();
+    //m_capturer.stopAsyncCapture();
     m_capturer.destory();
     m_work_guard.reset();
     m_asio_context.stop();
     m_asio_thread.join();
+    //TODO optimize
     m_texture.destroyStaging();
     m_texture.destroy();
     uif::AppBase::destroy();

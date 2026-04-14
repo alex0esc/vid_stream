@@ -1,119 +1,102 @@
 #include "windows/screen_capturer_windows.hpp"
+#include "screen_capturer.hpp"
 #include "logger.hpp"
 #include <d3d11.h>
-#include <dxgi.h>
 #include <dxgiformat.h>
-#include <winerror.h>
 
 
 namespace vsa {
 
-  void CapturerWindows::init() {
-    HRESULT result = D3D11CreateDevice(
-      nullptr,
-      D3D_DRIVER_TYPE_HARDWARE,
-      nullptr, D3D11_CREATE_DEVICE_BGRA_SUPPORT,
-      nullptr,
-      0,
+  std::vector<std::unique_ptr<DisplayInfo>> CapturerWindows::listDisplays() {
+    ComPtr<IDXGIFactory1> factory = nullptr;
+    CreateDXGIFactory1(__uuidof(IDXGIFactory1), (void**)&factory);
+  
+    ComPtr<IDXGIAdapter1> adapter = nullptr;
+    std::vector<std::unique_ptr<DisplayInfo>> display_infos;    
+    for (uint32_t i = 0; factory->EnumAdapters1(i, &adapter) != DXGI_ERROR_NOT_FOUND; i++) {
+      ComPtr<IDXGIOutput> output = nullptr;
+      for (UINT j = 0; adapter->EnumOutputs(j, &output) != DXGI_ERROR_NOT_FOUND; j++) {
+  
+        DXGI_OUTPUT_DESC outputDesc;
+        output->GetDesc(&outputDesc);
+        DisplayInfoWindows* info = new DisplayInfoWindows();
+        auto wstr = std::wstring(outputDesc.DeviceName);
+        info->m_name = std::string(wstr.begin(), wstr.end()).substr(4);
+        info->m_offset_x = outputDesc.DesktopCoordinates.left;
+        info->m_offset_y = outputDesc.DesktopCoordinates.top;
+        info->m_width = outputDesc.DesktopCoordinates.right - info->m_offset_x;
+        info->m_height = outputDesc.DesktopCoordinates.bottom - info->m_offset_y;
+        info->m_adapter = adapter; 
+        info->m_output = output;
+        display_infos.push_back(std::unique_ptr<DisplayInfo>(info));       
+        LOG_TRACE("Found display " << info->m_name << ": " << info->m_width << "x" << info->m_height << ".");
+      }
+    }
+    return display_infos;
+  }
+  
+  void CapturerWindows::init(std::unique_ptr<DisplayInfo>& display_info) {
+    DisplayInfoWindows* info_windows = static_cast<DisplayInfoWindows*>(display_info.get());
+    D3D11CreateDevice(
+      info_windows->m_adapter.Get(),
+      D3D_DRIVER_TYPE_UNKNOWN,
+      nullptr, 0,
+      nullptr, 0,
       D3D11_SDK_VERSION,
       &m_device,
       nullptr,
       &m_context);
-    if(FAILED(result)) {
-      LOG_ERROR("Failed to create D3D11 device.");
-      std::abort();
-    }
+    LOG_TRACE("Created dxgi D3D11Device.");
     
-    m_device.As(&m_dxgi_device);
+    ComPtr<IDXGIOutput1> output1;
+    info_windows->m_output.As(&output1);
+    output1->DuplicateOutput(m_device.Get(), &m_duplication);      
 
-    m_dxgi_device->GetAdapter(&m_adapter);
-
-    m_adapter->EnumOutputs(0, &m_output);
-    m_output.As(&m_output1);
-    
-    result = m_output1->DuplicateOutput(m_device.Get(), &m_duplication);
-    if(FAILED(result)) {
-      LOG_ERROR("Duplication failed with code: " << std::hex << result);
-      std::abort();
-    }
-  }
-
-  
-  bool CapturerWindows::captureFrame() {
-    m_duplication->ReleaseFrame();
-    DXGI_OUTDUPL_FRAME_INFO frame_info = {};
-    HRESULT result = m_duplication->AcquireNextFrame(100, &frame_info, &m_desktop_resource);
-    if(result == DXGI_ERROR_WAIT_TIMEOUT) {
-      LOG_ERROR("Not enough time to aquire next frame."); 
-      return false;
-    } else if(FAILED(result)) {
-      LOG_ERROR("Could not aquire next frame."); 
-      return false;
-    }
-    m_desktop_resource.As(&m_texture);
+    //create staging buffer
+    //TODO only init if necessary
     D3D11_TEXTURE2D_DESC desc = {};
-    m_texture->GetDesc(&desc);
-    m_texture_width = desc.Width;
-    m_texture_height = desc.Height;
-    return true;
-  }
-
-
-  uint8_t* CapturerWindows::getFrame() {
-    return nullptr;
-  }
-  /*
-  bool CapturerWindows::getVulkanFrame(uif::TextureData& texture) {
-    D3D11_TEXTURE2D_DESC desc = {};
-    desc.Width = m_texture_width;
-    desc.Height = m_texture_height;
+    desc.Width = display_info->m_width;
+    desc.Height = display_info->m_height;
     desc.MipLevels = 1;
     desc.ArraySize = 1;
-    desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+    desc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
+    desc.Usage = D3D11_USAGE_STAGING;
     desc.SampleDesc.Count = 1;
-    desc.Usage = D3D11_USAGE_DEFAULT;
-    desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-    desc.MiscFlags = D3D11_RESOURCE_MISC_SHARED;
+    desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
 
-    HRESULT result = m_device->CreateTexture2D(&desc, nullptr, &m_shared_texture);
-    if(FAILED(result)) {
-      LOG_ERROR("Failed to create the shared texture for vulkan.");
-      return false;
-    }
-
-    m_shared_texture.As(&m_dxgi_resource);
-
-    HANDLE shared_handle = nullptr;
-    m_dxgi_resource->CreateSharedHandle(nullptr, DXGI_SHARED_RESOURCE_READ, nullptr, &shared_handle);
-
-    vk::ExternalMemoryImageCreateInfo external_info(vk::ExternalMemoryHandleTypeFlagBits::eD3D11Texture);
-
-    vk::ImageCreateInfo image_info;
-    image_info.imageType = vk::ImageType::e2D;
-    image_info.pNext = &external_info;
-    image_info.format = vk::Format::eR8G8B8A8Unorm;
-    image_info.extent = vk::Extent3D(m_texture_width, m_texture_height, 1);
-    image_info.mipLevels = 1;
-    image_info.arrayLayers = 1;
-    image_info.samples = vk::SampleCountFlagBits::e1;
-    image_info.tiling = vk::ImageTiling::eOptimal;
-    image_info.usage = vk::ImageUsageFlagBits::eSampled | vk::ImageUsageFlagBits::eTransferDst;
-     
-    return true;
-  }
-  */
-
-  void CapturerWindows::destory() {
-    m_texture_width = 0;
-    m_texture_height = 0;
-    m_texture.Reset();
-    m_desktop_resource.Reset();
-    m_duplication.Reset();
-    m_output1.Reset();
-    m_output.Reset();
-    m_adapter.Reset();
-    m_dxgi_device.Reset();
-    m_device.Reset();
+    m_device->CreateTexture2D(&desc, nullptr, &m_staging_texture);
   }
   
+  bool CapturerWindows::captureFrame() {
+    m_resource.Reset();
+    m_duplication->ReleaseFrame();
+    DXGI_OUTDUPL_FRAME_INFO frame_info;
+    HRESULT result = m_duplication->AcquireNextFrame(500, &frame_info, &m_resource);
+    if(!SUCCEEDED(result)) {
+      LOG_ERROR("DXGI error while capturing a frame: " << result);
+      return false;
+    }
+    return true;
+  }
+  
+  void CapturerWindows::copyFrame(void* dst_memory) {
+    ComPtr<ID3D11Texture2D> gpu_texture; 
+    m_resource.As(&gpu_texture);
+
+    m_context->CopyResource(m_staging_texture.Get(), gpu_texture.Get());
+    D3D11_MAPPED_SUBRESOURCE mapped;
+    m_context->Map(m_staging_texture.Get(), 0, D3D11_MAP_READ, 0, &mapped);
+    memcpy(dst_memory, mapped.pData, mapped.DepthPitch);
+    m_context->Unmap(m_staging_texture.Get(), 0);
+    gpu_texture.Reset();
+  }
+  
+  void CapturerWindows::destory() {
+    m_staging_texture.Reset();
+    m_resource.Reset();
+    m_duplication.Reset();
+    m_device.Reset();
+    m_context.Reset();
+  }  
+
 }

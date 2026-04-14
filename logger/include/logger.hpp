@@ -66,3 +66,4 @@ namespace slog {
   #define LOG_TRACE(msg)
 #endif
 
+

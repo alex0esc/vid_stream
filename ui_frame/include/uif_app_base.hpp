@@ -1,6 +1,7 @@
 #pragma once
 #include "uif_context.hpp"
 #include "uif_window.hpp"
+#include "vulkan/vulkan.hpp"
 
 
 namespace uif {
@@ -14,6 +15,7 @@ namespace uif {
     float m_min_frame_time = 0.01;
     
     virtual void update() {}
+    virtual void bufferFunction(vk::CommandBuffer cmd_buffer) {};
     virtual void imguiLayoutSetup();
     virtual void manageFrameTime();
         

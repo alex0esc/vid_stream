@@ -1,5 +1,6 @@
 #include "uif_app_base.hpp"
 #include "uif_util.hpp"
+#include "vulkan/vulkan.hpp"
 #include <chrono>
 #if defined(BUILD_WINDOWS)
 #include <windows.h>
@@ -17,6 +18,7 @@ namespace uif {
     Window::initGlfw();
     m_window.createWindow("Ufi App");
     m_vk_context.init(&m_window);        
+    m_vk_context.m_buffer_function = std::bind(&AppBase::bufferFunction, this, std::placeholders::_1);
   }  
 
   void AppBase::imguiLayoutSetup() {

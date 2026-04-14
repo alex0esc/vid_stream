@@ -12,10 +12,13 @@ namespace vsa {
 
   #if defined(BUILD_WINDOWS)
     using CapturerPlatform = CapturerWindows;  
+    using DisplayInfoPlatform = DisplayInfoWindows;
   #elif defined(BUILD_APPLE)
-    using CapturerPlatform = CapturerMac;
+    using CapturerPlatform = CapturerApple;
+    using DisplayInfoPlatform = DisplayInfoApple;
   #elif defined(BUILD_LINUX)
     using CapturerPlatform = CapturerLinux;
+    using DisplayInfoPlatform = DisplayInfoLinux;
   #endif
 
 }

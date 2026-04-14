@@ -58,6 +58,7 @@ namespace vsa {
     void imguiLayoutSetup() override;
     
     void update() override;
+    void bufferFunction(vk::CommandBuffer cmd_buffer) override;
         
     void onConnect();
     void onDisconnect();

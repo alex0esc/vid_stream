@@ -22,7 +22,7 @@ namespace uif {
   } 
 
   void Window::initGlfw() {
-    glfwInitHint(GLFW_PLATFORM, GLFW_PLATFORM_X11);
+   // glfwInitHint(GLFW_PLATFORM, GLFW_PLATFORM_X11);
     if(!glfwInit() || !glfwVulkanSupported()) {
       LOG_ERROR("Failed to initialize GLFW version " << glfwGetVersionString() << " with vulkan.");
       std::abort();
