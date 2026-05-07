@@ -98,6 +98,7 @@ namespace uif {
         break;
       }
     }    
+    #ifdef ENABLE_COMPUTE
     for (size_t i = 0; i < properties.size(); i++) {
       if(properties[i].queueCount > 0
         && !(properties[i].queueFlags & vk::QueueFlagBits::eGraphics) 
@@ -109,6 +110,7 @@ namespace uif {
         break;
       }
     }
+    #endif
   }
 
 
@@ -154,6 +156,7 @@ namespace uif {
     } else {
       m_compute_queue = m_graphics_queue;
       m_compute_queue_family_index = m_graphics_queue_family_index;
+      LOG_WARN("Compute enabled but could not find a dedicated compute queue, falling back to graphics queue.");
     }
   }
 
